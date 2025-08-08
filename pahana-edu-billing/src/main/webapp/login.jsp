@@ -120,7 +120,7 @@
 
         .brand-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .brand-logo {
@@ -203,24 +203,6 @@
             padding-left: 2.75rem;
         }
 
-        .password-toggle {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #9ca3af;
-            cursor: pointer;
-            z-index: 3;
-            padding: 0;
-            font-size: 1rem;
-        }
-
-        .password-toggle:hover {
-            color: #667eea;
-        }
-
         .btn-login {
             width: 100%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -265,7 +247,27 @@
             border-left: 4px solid #16a34a;
         }
 
+        .nav-tabs {
+            border: none;
+            margin-bottom: 1.5rem;
+        }
 
+        .nav-tabs .nav-link {
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: #667eea;
+        }
 
         .footer-text {
             text-align: center;
@@ -274,7 +276,6 @@
             font-size: 0.85rem;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .login-container {
                 flex-direction: column;
@@ -325,7 +326,6 @@
             }
         }
 
-        /* Loading animation */
         .btn-login.loading {
             pointer-events: none;
             opacity: 0.8;
@@ -359,13 +359,13 @@
                 </div>
                 <h1 class="hero-title">Bookshop Management</h1>
                 <p class="hero-subtitle">
-                    Access your comprehensive bookshop management system and streamline your educational bookstore operations.
+                    Access your comprehensive bookshop management system or browse our collection as a customer.
                 </p>
                 <ul class="feature-list">
                     <li><i class="fas fa-check"></i> Inventory & Stock Management</li>
                     <li><i class="fas fa-check"></i> Sales & Order Processing</li>
                     <li><i class="fas fa-check"></i> Customer & Student Records</li>
-                    <li><i class="fas fa-check"></i> Financial Reports & Analytics</li>
+                    <li><i class="fas fa-check"></i> Easy Book Shopping</li>
                 </ul>
             </div>
         </div>
@@ -396,38 +396,91 @@
                         </div>
                     </c:if>
 
-                    <form method="post" action="${pageContext.request.contextPath}/login" id="loginForm">
-                        <div class="form-group">
-                            <label for="username" class="form-label">Username</label>
-                            <div class="input-group">
-                                <i class="fas fa-user input-icon"></i>
-                                <input type="text" class="form-control has-icon" 
-                                       id="username" name="username" required 
-                                       placeholder="Enter your username"
-                                       autocomplete="username">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="password" class="form-label">Password</label>
-                            <div class="input-group">
-                                <i class="fas fa-lock input-icon"></i>
-                                <input type="password" class="form-control has-icon" 
-                                       id="password" name="password" required 
-                                       placeholder="Enter your password"
-                                       autocomplete="current-password">
-                                <button type="button" class="password-toggle" onclick="togglePassword()">
-                                    <i class="fas fa-eye" id="toggleIcon"></i>
+                    <!-- Tabs for Admin/Staff and Customer Login -->
+                    <ul class="nav nav-tabs" id="loginTabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="admin-tab" data-bs-toggle="tab" href="#admin-login">Admin/Staff</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="customer-tab" data-bs-toggle="tab" href="#customer-login">Customer</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!-- Admin/Staff Login -->
+                        <div class="tab-pane fade show active" id="admin-login">
+                            <form method="post" action="${pageContext.request.contextPath}/login" id="adminLoginForm">
+                                <input type="hidden" name="loginType" value="admin">
+                                <div class="form-group">
+                                    <label for="username" class="form-label">Username</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-user input-icon"></i>
+                                        <input type="text" class="form-control has-icon" 
+                                               id="username" name="username" required 
+                                               placeholder="Enter your username"
+                                               autocomplete="username">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-lock input-icon"></i>
+                                        <input type="password" class="form-control has-icon" 
+                                               id="password" name="password" required 
+                                               placeholder="Enter your password"
+                                               autocomplete="current-password">
+                                        <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                            <i class="fas fa-eye" id="toggleIconPassword"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-login" id="adminLoginBtn">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
                                 </button>
-                            </div>
+                            </form>
                         </div>
-                        
-                        <button type="submit" class="btn btn-login" id="loginBtn">
-                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
-                        </button>
-                    </form>
 
+                        <!-- Customer Login -->
+                        <div class="tab-pane fade" id="customer-login">
+                            <form method="post" action="${pageContext.request.contextPath}/login" id="customerLoginForm">
+                                <input type="hidden" name="loginType" value="customer">
+                                <div class="form-group">
+                                    <label for="accountNumber" class="form-label">Account Number</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-id-card input-icon"></i>
+                                        <input type="text" class="form-control has-icon" 
+                                               id="accountNumber" name="accountNumber" required 
+                                               placeholder="Enter your account number"
+                                               autocomplete="off">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="telephone" class="form-label">Telephone Number</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-phone input-icon"></i>
+                                        <input type="tel" class="form-control has-icon" 
+                                               id="telephone" name="telephone" required 
+                                               placeholder="Enter your telephone number"
+                                               autocomplete="tel">
+                                        <button type="button" class="password-toggle" onclick="toggleTelephone('telephone')">
+                                            <i class="fas fa-eye" id="toggleIconTelephone"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-login" id="customerLoginBtn">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                                </button>
+                            </form>
+                        </div>
+                    </div>
 
+                    <div class="text-center mt-3">
+                        <small class="text-muted">Customer? Use your account number and telephone number to log in.</small>
+                    </div>
                 </div>
 
                 <div class="footer-text">
@@ -440,63 +493,65 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleIcon = document.getElementById('toggleIcon');
+        function togglePassword(fieldId) {
+            const input = document.getElementById(fieldId);
+            const toggleIcon = document.getElementById(`toggleIcon${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)}`);
             
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
+            if (input.type === 'password' || input.type === 'tel') {
+                input.type = 'text';
                 toggleIcon.classList.remove('fa-eye');
                 toggleIcon.classList.add('fa-eye-slash');
             } else {
-                passwordInput.type = 'password';
+                input.type = fieldId === 'password' ? 'password' : 'tel';
                 toggleIcon.classList.remove('fa-eye-slash');
                 toggleIcon.classList.add('fa-eye');
             }
         }
 
-        function fillDemo(type) {
-            const usernameInput = document.getElementById('username');
-            const passwordInput = document.getElementById('password');
-            
-            if (type === 'admin') {
-                usernameInput.value = 'admin';
-                passwordInput.value = 'admin123';
-            } else if (type === 'staff') {
-                usernameInput.value = 'staff1';
-                passwordInput.value = 'staff123';
-            }
-            
-            // Add a subtle animation to indicate the fields were filled
-            usernameInput.style.transform = 'scale(1.02)';
-            passwordInput.style.transform = 'scale(1.02)';
-            
-            setTimeout(() => {
-                usernameInput.style.transform = 'scale(1)';
-                passwordInput.style.transform = 'scale(1)';
-            }, 200);
+        function toggleTelephone(fieldId) {
+            togglePassword(fieldId);
         }
 
-        // Auto-focus username field
+        // Auto-focus first field based on active tab
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('username').focus();
-        });
+            const adminTab = document.getElementById('admin-tab');
+            if (adminTab.classList.contains('active')) {
+                document.getElementById('username').focus();
+            }
 
-        // Form submission with loading state
-        document.getElementById('loginForm').addEventListener('submit', function() {
-            const submitBtn = document.getElementById('loginBtn');
-            submitBtn.classList.add('loading');
-            submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Signing In...';
-        });
-
-        // Add smooth transitions to form inputs
-        document.querySelectorAll('.form-control').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.style.transform = 'translateY(-2px)';
+            // Tab switch handling
+            document.querySelectorAll('.nav-link').forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function() {
+                    if (this.id === 'admin-tab') {
+                        document.getElementById('username').focus();
+                    } else {
+                        document.getElementById('accountNumber').focus();
+                    }
+                });
             });
-            
-            input.addEventListener('blur', function() {
-                this.parentElement.style.transform = 'translateY(0)';
+
+            // Form submission with loading state
+            document.getElementById('adminLoginForm').addEventListener('submit', function() {
+                const submitBtn = document.getElementById('adminLoginBtn');
+                submitBtn.classList.add('loading');
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Signing In...';
+            });
+
+            document.getElementById('customerLoginForm').addEventListener('submit', function() {
+                const submitBtn = document.getElementById('customerLoginBtn');
+                submitBtn.classList.add('loading');
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Signing In...';
+            });
+
+            // Add smooth transitions to form inputs
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-2px)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'translateY(0)';
+                });
             });
         });
     </script>
