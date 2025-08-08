@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Staff - Pahana Edu Bookshop</title>
+    <title>Add Staff - Pahana Edu Bookshop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -258,7 +258,7 @@
             left: 0;
             width: 100%;
             height: 6px;
-            background: var(--warning-gradient);
+            background: var(--success-gradient);
         }
 
         .form-header {
@@ -269,7 +269,7 @@
         .form-icon {
             width: 80px;
             height: 80px;
-            background: var(--warning-gradient);
+            background: var(--success-gradient);
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -290,26 +290,6 @@
         .form-subtitle {
             color: #64748b;
             font-size: 1rem;
-        }
-
-        .staff-info-banner {
-            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid var(--warning-color);
-        }
-
-        .staff-info-banner h6 {
-            color: var(--dark-color);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .staff-info-banner p {
-            color: #64748b;
-            margin: 0;
-            font-size: 0.9rem;
         }
 
         .form-group {
@@ -337,8 +317,8 @@
         }
 
         .form-control:focus, .form-select:focus {
-            border-color: var(--warning-color);
-            box-shadow: 0 0 0 0.2rem rgba(67, 233, 123, 0.15);
+            border-color: var(--success-color);
+            box-shadow: 0 0 0 0.2rem rgba(79, 172, 254, 0.15);
             background: white;
             outline: none;
         }
@@ -388,30 +368,7 @@
         }
 
         .password-toggle:hover {
-            color: var(--warning-color);
-        }
-
-        .password-section {
-            background: #f8fafc;
-            border: 2px dashed #e2e8f0;
-            border-radius: 16px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .password-section h6 {
-            color: var(--dark-color);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .password-section p {
-            color: #64748b;
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
+            color: var(--success-color);
         }
 
         /* Button Styles */
@@ -439,13 +396,13 @@
             justify-content: center;
         }
 
-        .btn-warning-custom {
-            background: var(--warning-gradient);
+        .btn-success-custom {
+            background: var(--success-gradient);
             color: white;
             box-shadow: var(--shadow-light);
         }
 
-        .btn-warning-custom:hover {
+        .btn-success-custom:hover {
             transform: translateY(-3px);
             box-shadow: var(--shadow-medium);
             color: white;
@@ -461,32 +418,6 @@
             background: #cbd5e0;
             color: #4a5568;
             transform: translateY(-2px);
-        }
-
-        .btn-danger-custom {
-            background: var(--danger-gradient);
-            color: white;
-            box-shadow: var(--shadow-light);
-        }
-
-        .btn-danger-custom:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-medium);
-            color: white;
-        }
-
-        /* Role Badge */
-        .current-role-badge {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: var(--success-gradient);
-            color: white;
-            border-radius: 16px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-left: 1rem;
         }
 
         /* Validation Styles */
@@ -576,13 +507,6 @@
             .btn-custom {
                 min-width: auto;
             }
-
-            .current-role-badge {
-                margin-left: 0;
-                margin-top: 0.5rem;
-                display: block;
-                text-align: center;
-            }
         }
 
         @media (max-width: 768px) {
@@ -663,8 +587,8 @@
         <!-- Top Bar -->
         <div class="topbar">
             <div class="topbar-title">
-                <h4>Edit Staff Member</h4>
-                <div class="topbar-subtitle">Update staff member information and permissions</div>
+                <h4>Add New Staff Member</h4>
+                <div class="topbar-subtitle">Create a new staff account with appropriate permissions</div>
             </div>
             <div class="d-flex align-items-center gap-3">
                 <a href="${pageContext.request.contextPath}/staff" class="back-btn">
@@ -699,28 +623,14 @@
                 <div class="form-card">
                     <div class="form-header">
                         <div class="form-icon">
-                            <i class="fas fa-user-edit"></i>
+                            <i class="fas fa-user-plus"></i>
                         </div>
-                        <h2 class="form-title">Edit Staff Member</h2>
-                        <p class="form-subtitle">Update the information for this staff member</p>
+                        <h2 class="form-title">Add New Staff Member</h2>
+                        <p class="form-subtitle">Fill in the information to create a new staff account</p>
                     </div>
 
-                    <!-- Staff Info Banner -->
-                    <div class="staff-info-banner">
-                        <h6>
-                            <i class="fas fa-user-circle"></i>
-                            Currently Editing: ${staff.username}
-                            <span class="current-role-badge">${staff.role}</span>
-                        </h6>
-                        <p>
-                            Member since: <fmt:formatDate value="${staff.createdAt}" pattern="MMMM dd, yyyy"/> • 
-                            Last updated: <fmt:formatDate value="${staff.updatedAt}" pattern="MMMM dd, yyyy 'at' HH:mm"/>
-                        </p>
-                    </div>
-
-                    <form action="${pageContext.request.contextPath}/staff" method="post" id="editStaffForm" novalidate>
-                        <input type="hidden" name="action" value="update">
-                        <input type="hidden" name="id" value="${staff.id}">
+                    <form action="${pageContext.request.contextPath}/staff" method="post" id="addStaffForm" novalidate>
+                        <input type="hidden" name="action" value="add">
                         
                         <!-- Username Field -->
                         <div class="form-group">
@@ -731,7 +641,7 @@
                             <div class="input-group">
                                 <i class="fas fa-user input-icon"></i>
                                 <input type="text" class="form-control has-icon" id="username" name="username" 
-                                       value="${staff.username}" placeholder="Enter username" required>
+                                       value="${username}" placeholder="Enter username" required>
                             </div>
                             <div class="form-text">
                                 <i class="fas fa-info-circle"></i>
@@ -749,7 +659,7 @@
                             <div class="input-group">
                                 <i class="fas fa-envelope input-icon"></i>
                                 <input type="email" class="form-control has-icon" id="email" name="email" 
-                                       value="${staff.email}" placeholder="Enter email address" required>
+                                       value="${email}" placeholder="Enter email address" required>
                             </div>
                             <div class="form-text">
                                 <i class="fas fa-info-circle"></i>
@@ -758,51 +668,42 @@
                             <div class="invalid-feedback" id="emailError"></div>
                         </div>
 
-                        <!-- Password Change Section -->
-                        <div class="password-section">
-                            <h6>
-                                <i class="fas fa-key"></i>
-                                Change Password (Optional)
-                            </h6>
-                            <p>Leave the password fields empty if you don't want to change the current password.</p>
-                            
-                            <!-- New Password Field -->
-                            <div class="form-group mb-3">
-                                <label for="newPassword" class="form-label">
-                                    <i class="fas fa-lock"></i>
-                                    New Password
-                                </label>
-                                <div class="input-group">
-                                    <i class="fas fa-lock input-icon"></i>
-                                    <input type="password" class="form-control has-icon" id="newPassword" name="newPassword" 
-                                           placeholder="Enter new password (optional)">
-                                    <button type="button" class="password-toggle" onclick="togglePassword('newPassword')">
-                                        <i class="fas fa-eye" id="newPasswordToggleIcon"></i>
-                                    </button>
-                                </div>
-                                <div class="form-text">
-                                    <i class="fas fa-shield-alt"></i>
-                                    Password must be at least 6 characters long
-                                </div>
-                                <div class="invalid-feedback" id="newPasswordError"></div>
+                        <!-- Password Field -->
+                        <div class="form-group">
+                            <label for="password" class="form-label">
+                                <i class="fas fa-lock"></i>
+                                Password
+                            </label>
+                            <div class="input-group">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" class="form-control has-icon" id="password" name="password" 
+                                       placeholder="Enter password" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                    <i class="fas fa-eye" id="passwordToggleIcon"></i>
+                                </button>
                             </div>
+                            <div class="form-text">
+                                <i class="fas fa-shield-alt"></i>
+                                Password must be at least 6 characters long
+                            </div>
+                            <div class="invalid-feedback" id="passwordError"></div>
+                        </div>
 
-                            <!-- Confirm New Password Field -->
-                            <div class="form-group mb-0">
-                                <label for="confirmNewPassword" class="form-label">
-                                    <i class="fas fa-check-circle"></i>
-                                    Confirm New Password
-                                </label>
-                                <div class="input-group">
-                                    <i class="fas fa-check-circle input-icon"></i>
-                                    <input type="password" class="form-control has-icon" id="confirmNewPassword" 
-                                           name="confirmNewPassword" placeholder="Confirm new password">
-                                    <button type="button" class="password-toggle" onclick="togglePassword('confirmNewPassword')">
-                                        <i class="fas fa-eye" id="confirmNewPasswordToggleIcon"></i>
-                                    </button>
-                                </div>
-                                <div class="invalid-feedback" id="confirmNewPasswordError"></div>
+                        <!-- Confirm Password Field -->
+                        <div class="form-group">
+                            <label for="confirmPassword" class="form-label">
+                                <i class="fas fa-check-circle"></i>
+                                Confirm Password
+                            </label>
+                            <div class="input-group">
+                                <i class="fas fa-check-circle input-icon"></i>
+                                <input type="password" class="form-control has-icon" id="confirmPassword" 
+                                       name="confirmPassword" placeholder="Confirm password" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                                    <i class="fas fa-eye" id="confirmPasswordToggleIcon"></i>
+                                </button>
                             </div>
+                            <div class="invalid-feedback" id="confirmPasswordError"></div>
                         </div>
 
                         <!-- Role Field -->
@@ -813,8 +714,8 @@
                             </label>
                             <select class="form-select" id="role" name="role" required>
                                 <option value="">Select Role</option>
-                                <option value="STAFF" ${staff.role eq 'STAFF' ? 'selected' : ''}>Staff Member</option>
-                                <option value="ADMIN" ${staff.role eq 'ADMIN' ? 'selected' : ''}>Administrator</option>
+                                <option value="STAFF" ${role eq 'STAFF' ? 'selected' : ''}>Staff Member</option>
+                                <option value="ADMIN" ${role eq 'ADMIN' ? 'selected' : ''}>Administrator</option>
                             </select>
                             <div class="form-text">
                                 <i class="fas fa-info-circle"></i>
@@ -825,48 +726,16 @@
 
                         <!-- Form Buttons -->
                         <div class="btn-group-custom">
-                            <button type="submit" class="btn-custom btn-warning-custom">
-                                <i class="fas fa-save"></i>
-                                Update Staff Member
+                            <button type="submit" class="btn-custom btn-success-custom">
+                                <i class="fas fa-user-plus"></i>
+                                Create Staff Member
                             </button>
                             <a href="${pageContext.request.contextPath}/staff" class="btn-custom btn-secondary-custom">
                                 <i class="fas fa-times"></i>
                                 Cancel
                             </a>
-                            <button type="button" class="btn-custom btn-danger-custom" onclick="confirmDelete(${staff.id}, '${staff.username}')">
-                                <i class="fas fa-trash"></i>
-                                Delete Staff
-                            </button>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border-radius: var(--border-radius);">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title">
-                        <i class="fas fa-exclamation-triangle text-danger"></i>
-                        Confirm Delete
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete staff member <strong id="staffNameToDelete"></strong>?</p>
-                    <p class="text-danger small">
-                        <i class="fas fa-warning"></i>
-                        This action cannot be undone and will permanently remove all associated data.
-                    </p>
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <a href="#" id="confirmDeleteBtn" class="btn btn-danger">
-                        <i class="fas fa-trash"></i> Delete Permanently
-                    </a>
                 </div>
             </div>
         </div>
@@ -900,24 +769,14 @@
             }
         }
 
-        // Confirm delete function
-        function confirmDelete(staffId, staffName) {
-            document.getElementById('staffNameToDelete').textContent = staffName;
-            document.getElementById('confirmDeleteBtn').href = 
-                '${pageContext.request.contextPath}/staff?action=delete&id=' + staffId;
-            
-            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-            deleteModal.show();
-        }
-
         // Form validation
-        document.getElementById('editStaffForm').addEventListener('submit', function(e) {
+        document.getElementById('addStaffForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             let isValid = true;
             
             // Reset all validation states
-            const fields = ['username', 'email', 'newPassword', 'confirmNewPassword', 'role'];
+            const fields = ['username', 'email', 'password', 'confirmPassword', 'role'];
             fields.forEach(field => {
                 const element = document.getElementById(field);
                 if (element) {
@@ -934,6 +793,9 @@
             if (username.length < 3) {
                 showError('username', 'Username must be at least 3 characters long');
                 isValid = false;
+            } else if (!username.match(/^[a-zA-Z0-9_]+$/)) {
+                showError('username', 'Username can only contain letters, numbers, and underscores');
+                isValid = false;
             } else {
                 showValid('username');
             }
@@ -948,27 +810,22 @@
                 showValid('email');
             }
             
-            // Password validation (only if new password is entered)
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+            // Password validation
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
             
-            if (newPassword.length > 0) {
-                if (newPassword.length < 6) {
-                    showError('newPassword', 'Password must be at least 6 characters long');
-                    isValid = false;
-                } else {
-                    showValid('newPassword');
-                }
-                
-                if (newPassword !== confirmNewPassword) {
-                    showError('confirmNewPassword', 'Passwords do not match');
-                    isValid = false;
-                } else if (confirmNewPassword.length > 0) {
-                    showValid('confirmNewPassword');
-                }
-            } else if (confirmNewPassword.length > 0) {
-                showError('newPassword', 'Please enter a new password');
+            if (password.length < 6) {
+                showError('password', 'Password must be at least 6 characters long');
                 isValid = false;
+            } else {
+                showValid('password');
+            }
+            
+            if (password !== confirmPassword) {
+                showError('confirmPassword', 'Passwords do not match');
+                isValid = false;
+            } else if (confirmPassword.length > 0) {
+                showValid('confirmPassword');
             }
             
             // Role validation
@@ -983,7 +840,7 @@
             if (isValid) {
                 // Show loading state
                 const submitBtn = this.querySelector('button[type="submit"]');
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
                 submitBtn.disabled = true;
                 
                 // Submit form
@@ -1010,7 +867,7 @@
 
         // Real-time validation
         document.getElementById('username').addEventListener('input', function() {
-            if (this.value.length >= 3) {
+            if (this.value.length >= 3 && this.value.match(/^[a-zA-Z0-9_]+$/)) {
                 showValid('username');
             }
         });
@@ -1022,16 +879,16 @@
             }
         });
 
-        document.getElementById('newPassword').addEventListener('input', function() {
+        document.getElementById('password').addEventListener('input', function() {
             if (this.value.length >= 6) {
-                showValid('newPassword');
+                showValid('password');
             }
         });
 
-        document.getElementById('confirmNewPassword').addEventListener('input', function() {
-            const newPassword = document.getElementById('newPassword').value;
-            if (this.value === newPassword && this.value.length > 0) {
-                showValid('confirmNewPassword');
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            if (this.value === password && this.value.length > 0) {
+                showValid('confirmPassword');
             }
         });
 
@@ -1053,26 +910,6 @@
                 bsAlert.close();
             });
         }, 5000);
-
-        // Initialize form with current data
-        document.addEventListener('DOMContentLoaded', function() {
-            // Mark current fields as valid if they have data
-            const username = document.getElementById('username');
-            const email = document.getElementById('email');
-            const role = document.getElementById('role');
-
-            if (username && username.value.length >= 3) {
-                showValid('username');
-            }
-            
-            if (email && email.value.includes('@')) {
-                showValid('email');
-            }
-            
-            if (role && role.value) {
-                showValid('role');
-            }
-        });
     </script>
 </body>
 </html>
