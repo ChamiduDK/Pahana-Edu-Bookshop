@@ -6,343 +6,660 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders for ${customer.name} - Pahana Edu Bookshop</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>My Orders - Pahana Edu Bookshop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        .customer-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --warning-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            
+            --primary-color: #667eea;
+            --dark-color: #2d3748;
+            --border-radius: 24px;
+            --shadow-light: 0 4px 25px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 8px 50px rgba(0, 0, 0, 0.12);
+            --shadow-heavy: 0 20px 80px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: rgba(247, 250, 252, 0.8);
+            color: #2d3748;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grain)"/></svg>');
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-light);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--dark-color);
+        }
+
+        .brand-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
             color: white;
-            border-radius: 10px;
+            margin-right: 1rem;
+            box-shadow: var(--shadow-light);
         }
-        .order-card {
-            transition: transform 0.3s;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+        .brand-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        .order-card:hover {
-            transform: translateY(-5px);
+
+        /* Page Header */
+        .page-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 3rem 0;
+            position: relative;
+            overflow: hidden;
         }
-        .status-badge {
+
+        .page-header::before {
+            content: '';
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><pattern id="orders" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="none"/><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23orders)"/></svg>');
+            opacity: 0.3;
         }
-        .summary-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Order Cards */
+        .order-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .order-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .order-id {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark-color);
+        }
+
+        .order-date {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+            border: 2px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .status-confirmed {
+            background: rgba(6, 182, 212, 0.1);
+            color: #0891b2;
+            border: 2px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .status-shipped {
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366f1;
+            border: 2px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .status-delivered {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            border: 2px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .order-items {
+            margin-bottom: 1.5rem;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(102, 126, 234, 0.02);
+            border-radius: 16px;
+            margin-bottom: 0.75rem;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .item-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-title {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .item-author {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-price {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        .item-quantity {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 16px;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .total-label {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #64748b;
+        }
+
+        .empty-state i {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.3;
+            color: var(--primary-color);
+        }
+
+        .empty-state h4 {
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+        }
+
+        .shop-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 1rem 2rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .shop-btn:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Back Button */
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateX(-5px);
+        }
+
+        /* Summary Stats */
+        .order-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Loading Animation */
+        .loading {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .loading:nth-child(1) { animation-delay: 0.1s; }
+        .loading:nth-child(2) { animation-delay: 0.2s; }
+        .loading:nth-child(3) { animation-delay: 0.3s; }
+        .loading:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 2rem 0;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .order-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.75rem;
+            }
+            
+            .order-total {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+            
+            .order-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
         }
     </style>
 </head>
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+<body>
+    <!-- Header -->
+    <nav class="header">
         <div class="container">
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/dashboard">
-                <i class="fas fa-book"></i> Pahana Edu Bookshop
-            </a>
-            <div class="navbar-nav ms-auto">
-                <a href="${pageContext.request.contextPath}/dashboard" class="nav-link">
-                    <i class="fas fa-dashboard"></i> Dashboard
+            <div class="d-flex justify-content-between align-items-center py-3">
+                <a href="${pageContext.request.contextPath}/customer-dashboard" class="navbar-brand">
+                    <div class="brand-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <span class="brand-text">Pahana Edu</span>
                 </a>
-                <a href="${pageContext.request.contextPath}/customers" class="nav-link">
-                    <i class="fas fa-users"></i> Customers
-                </a>
-                <a href="${pageContext.request.contextPath}/orders" class="nav-link">
-                    <i class="fas fa-shopping-cart"></i> Orders
-                </a>
+                
+                <div class="d-flex align-items-center">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-2"></i>${sessionScope.customer.name}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/customer-dashboard">
+                                <i class="fas fa-store me-2"></i>Shop Books
+                            </a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/customer-profile">
+                                <i class="fas fa-user-edit me-2"></i>Profile
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/customer-logout">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
-        <!-- Customer Header -->
-        <div class="card customer-header mb-4">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <h3><i class="fas fa-user-circle"></i> ${customer.name}</h3>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="mb-1"><i class="fas fa-id-card"></i> Account: <strong>${customer.accountNumber}</strong></p>
-                                <p class="mb-1"><i class="fas fa-phone"></i> ${customer.telephone}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="mb-1"><i class="fas fa-map-marker-alt"></i> ${customer.address}</p>
-                                <c:if test="${not empty customer.email}">
-                                    <p class="mb-1"><i class="fas fa-envelope"></i> ${customer.email}</p>
-                                </c:if>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 text-end">
-                        <div class="summary-card p-3 rounded">
-                            <h4><i class="fas fa-cubes"></i> ${customer.unitsConsumed}</h4>
-                            <small>Total Units Consumed</small>
-                        </div>
-                    </div>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    <h1 class="page-title">My Orders</h1>
+                    <p class="page-subtitle">Track your book orders and purchase history</p>
                 </div>
-            </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4><i class="fas fa-history"></i> Order History (${orders.size()} orders)</h4>
-            <div>
-                <a href="${pageContext.request.contextPath}/customers" class="btn btn-outline-secondary me-2">
-                    <i class="fas fa-arrow-left"></i> Back to Customers
+                <a href="${pageContext.request.contextPath}/customer-dashboard" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Shop
                 </a>
-                <button class="btn btn-primary" onclick="window.print()">
-                    <i class="fas fa-print"></i> Print History
-                </button>
             </div>
         </div>
+    </section>
 
+    <!-- Main Content -->
+    <div class="container mt-4">
         <!-- Order Statistics -->
         <c:if test="${not empty orders}">
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fas fa-shopping-cart fa-2x text-primary mb-2"></i>
-                            <h4>${orders.size()}</h4>
-                            <small class="text-muted">Total Orders</small>
-                        </div>
+            <div class="order-stats loading">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-bag"></i>
                     </div>
+                    <div class="stat-value">${orders.size()}</div>
+                    <div class="stat-label">Total Orders</div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fas fa-dollar-sign fa-2x text-success mb-2"></i>
-                            <h4>
-                                <c:set var="totalAmount" value="0"/>
-                                <c:forEach items="${orders}" var="order">
-                                    <c:set var="totalAmount" value="${totalAmount + order.totalAmount}"/>
-                                </c:forEach>
-                                <fmt:formatNumber value="${totalAmount}" type="currency" currencySymbol="$"/>
-                            </h4>
-                            <small class="text-muted">Total Spent</small>
-                        </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
-                            <h4>
-                                <c:set var="deliveredCount" value="0"/>
-                                <c:forEach items="${orders}" var="order">
-                                    <c:if test="${order.status == 'DELIVERED'}">
-                                        <c:set var="deliveredCount" value="${deliveredCount + 1}"/>
-                                    </c:if>
-                                </c:forEach>
-                                ${deliveredCount}
-                            </h4>
-                            <small class="text-muted">Delivered</small>
-                        </div>
+                    <div class="stat-value">
+                        <c:set var="deliveredCount" value="0"/>
+                        <c:forEach items="${orders}" var="order">
+                            <c:if test="${order.status eq 'DELIVERED'}">
+                                <c:set var="deliveredCount" value="${deliveredCount + 1}"/>
+                            </c:if>
+                        </c:forEach>
+                        ${deliveredCount}
                     </div>
+                    <div class="stat-label">Completed</div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fas fa-clock fa-2x text-warning mb-2"></i>
-                            <h4>
-                                <c:set var="pendingCount" value="0"/>
-                                <c:forEach items="${orders}" var="order">
-                                    <c:if test="${order.status != 'DELIVERED' && order.status != 'CANCELLED'}">
-                                        <c:set var="pendingCount" value="${pendingCount + 1}"/>
-                                    </c:if>
-                                </c:forEach>
-                                ${pendingCount}
-                            </h4>
-                            <small class="text-muted">Pending</small>
-                        </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
                     </div>
+                    <div class="stat-value">
+                        <c:set var="pendingCount" value="0"/>
+                        <c:forEach items="${orders}" var="order">
+                            <c:if test="${order.status eq 'PENDING' or order.status eq 'CONFIRMED' or order.status eq 'SHIPPED'}">
+                                <c:set var="pendingCount" value="${pendingCount + 1}"/>
+                            </c:if>
+                        </c:forEach>
+                        ${pendingCount}
+                    </div>
+                    <div class="stat-label">In Progress</div>
                 </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <div class="stat-value">
+                        <c:set var="totalSpent" value="0"/>
+                        <c:forEach items="${orders}" var="order">
+                            <c:set var="totalSpent" value="${totalSpent + order.totalAmount}"/>
+                        </c:forEach>
+                        <fmt:formatNumber value="${totalSpent}" pattern="0"/>
+                    </div>
+                    <div class="stat-label">Total Spent (LKR)</div>
+                </div>
+            </div>
+        </c:if>
+
+        <!-- Alert Messages -->
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger alert-dismissible fade show loading" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>${error}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </c:if>
+
+        <c:if test="${not empty success}">
+            <div class="alert alert-success alert-dismissible fade show loading" role="alert">
+                <i class="fas fa-check-circle me-2"></i>${success}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         </c:if>
 
         <!-- Orders List -->
-        <c:if test="${empty orders}">
-            <div class="card">
-                <div class="card-body text-center py-5">
-                    <i class="fas fa-shopping-cart fa-5x text-muted mb-3"></i>
-                    <h4 class="text-muted">No orders yet</h4>
-                    <p class="text-muted">This customer hasn't placed any orders yet.</p>
-                    <a href="${pageContext.request.contextPath}/orders" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Create First Order
-                    </a>
-                </div>
-            </div>
-        </c:if>
-
         <c:if test="${not empty orders}">
-            <div class="row">
-                <c:forEach items="${orders}" var="order">
-                    <div class="col-lg-6 mb-4">
-                        <div class="card order-card h-100">
-                            <div class="card-body position-relative">
-                                <span class="status-badge">
-                                    <c:choose>
-                                        <c:when test="${order.status == 'PENDING'}">
-                                            <span class="badge bg-warning">${order.status}</span>
-                                        </c:when>
-                                        <c:when test="${order.status == 'CONFIRMED'}">
-                                            <span class="badge bg-info">${order.status}</span>
-                                        </c:when>
-                                        <c:when test="${order.status == 'SHIPPED'}">
-                                            <span class="badge bg-primary">${order.status}</span>
-                                        </c:when>
-                                        <c:when test="${order.status == 'DELIVERED'}">
-                                            <span class="badge bg-success">${order.status}</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span class="badge bg-danger">${order.status}</span>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </span>
-
-                                <h5 class="card-title">Order #${order.id}</h5>
-                                
-                                <div class="mb-3">
-                                    <p class="card-text mb-1">
-                                        <i class="fas fa-calendar text-muted"></i> 
-                                        <fmt:formatDate value="${order.orderDate}" pattern="MMM dd, yyyy 'at' HH:mm"/>
-                                    </p>
-                                    <p class="card-text mb-1">
-                                        <i class="fas fa-user text-muted"></i> 
-                                        Placed by: ${order.placedByUser.username}
-                                    </p>
-                                    <p class="card-text mb-1">
-                                        <i class="fas fa-boxes text-muted"></i> 
-                                        ${order.orderItems.size()} items
-                                    </p>
-                                </div>
-
-                                <!-- Order Items Preview -->
-                                <div class="mb-3">
-                                    <h6 class="text-muted">Items:</h6>
-                                    <div class="small">
-                                        <c:forEach items="${order.orderItems}" var="item" varStatus="status">
-                                            <div class="d-flex justify-content-between">
-                                                <span>${item.book.title} x ${item.quantity}</span>
-                                                <span><fmt:formatNumber value="${item.subtotal}" type="currency" currencySymbol="$"/></span>
-                                            </div>
-                                            <c:if test="${status.index >= 2 && orders.size() > 3}">
-                                                <div class="text-muted">... and ${order.orderItems.size() - 3} more items</div>
-                                                <c:set var="break" value="true"/>
-                                            </c:if>
-                                            <c:if test="${break}">
-                                                <c:remove var="break"/>
-                                                <c:set var="break" value="false"/>
-                                                <c:forEach begin="${status.index + 1}" end="${order.orderItems.size() - 1}" var="i">
-                                                    <c:set var="skip" value="true"/>
-                                                </c:forEach>
-                                            </c:if>
-                                        </c:forEach>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h5 class="text-primary mb-0">
-                                            <fmt:formatNumber value="${order.totalAmount}" type="currency" currencySymbol="$"/>
-                                        </h5>
-                                    </div>
-                                    <div>
-                                        <a href="${pageContext.request.contextPath}/orders?action=view&id=${order.id}" 
-                                           class="btn btn-outline-primary btn-sm">
-                                            <i class="fas fa-eye"></i> View Details
-                                        </a>
-                                    </div>
-                                </div>
+            <c:forEach items="${orders}" var="order" varStatus="status">
+                <div class="order-card loading">
+                    <div class="order-header">
+                        <div>
+                            <div class="order-id">Order #${order.id}</div>
+                            <div class="order-date">
+                                Placed on <fmt:formatDate value="${order.orderDate}" pattern="MMMM dd, yyyy 'at' HH:mm"/>
                             </div>
                         </div>
+                        <div class="status-badge status-${order.status.toLowerCase()}">
+                            <i class="fas fa-${order.status eq 'PENDING' ? 'clock' : order.status eq 'CONFIRMED' ? 'check' : order.status eq 'SHIPPED' ? 'truck' : order.status eq 'DELIVERED' ? 'check-circle' : 'times'} me-1"></i>
+                            ${order.status}
+                        </div>
                     </div>
-                </c:forEach>
-            </div>
 
-            <!-- Summary Table for Print -->
-            <div class="d-print-block d-none mt-4">
-                <h4>Detailed Order Summary</h4>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Order #</th>
-                            <th>Date</th>
-                            <th>Items</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach items="${orders}" var="order">
-                            <tr>
-                                <td>#${order.id}</td>
-                                <td><fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd"/></td>
-                                <td>${order.orderItems.size()}</td>
-                                <td><fmt:formatNumber value="${order.totalAmount}" type="currency" currencySymbol="$"/></td>
-                                <td>${order.status}</td>
-                            </tr>
+                    <div class="order-items">
+                        <c:forEach items="${order.orderItems}" var="item">
+                            <div class="order-item">
+                                <div class="item-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="item-details">
+                                    <div class="item-title">${item.book.title}</div>
+                                    <div class="item-author">by ${item.book.author}</div>
+                                    <div class="item-price">LKR <fmt:formatNumber value="${item.unitPrice}" pattern="0.00"/> each</div>
+                                </div>
+                                <div class="item-quantity">
+                                    Qty: ${item.quantity}
+                                </div>
+                            </div>
                         </c:forEach>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="3">Total</th>
-                            <th>
-                                <c:set var="grandTotal" value="0"/>
-                                <c:forEach items="${orders}" var="order">
-                                    <c:set var="grandTotal" value="${grandTotal + order.totalAmount}"/>
-                                </c:forEach>
-                                <fmt:formatNumber value="${grandTotal}" type="currency" currencySymbol="$"/>
-                            </th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                </table>
+                    </div>
+
+                    <div class="order-total">
+                        <span class="total-label">Total Amount:</span>
+                        <span class="total-amount">LKR <fmt:formatNumber value="${order.totalAmount}" pattern="0.00"/></span>
+                    </div>
+                </div>
+            </c:forEach>
+        </c:if>
+
+        <!-- Empty State -->
+        <c:if test="${empty orders}">
+            <div class="empty-state">
+                <i class="fas fa-shopping-bag"></i>
+                <h4>No orders yet</h4>
+                <p>You haven't placed any orders yet. Start shopping to see your orders here!</p>
+                <a href="${pageContext.request.contextPath}/customer-dashboard" class="shop-btn">
+                    <i class="fas fa-store"></i>
+                    Start Shopping
+                </a>
             </div>
         </c:if>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Print styles
-        const printStyles = `
-            <style type="text/css" media="print">
-                @page { 
-                    margin: 0.5in;
-                    size: A4;
-                }
-                body { 
-                    font-size: 11pt;
-                    line-height: 1.3;
-                }
-                .navbar, .btn:not(.d-print-block), .card:not(.customer-header) { 
-                    display: none !important; 
-                }
-                .customer-header {
-                    background: white !important;
-                    color: black !important;
-                    border: 2px solid #000;
-                }
-                .d-print-block {
-                    display: block !important;
-                }
-                .summary-card {
-                    background: white !important;
-                    color: black !important;
-                    border: 1px solid #000;
-                }
-                h3, h4 { 
-                    color: #000 !important;
-                    page-break-after: avoid;
-                }
-                .table {
-                    page-break-inside: avoid;
-                }
-            </style>
-        `;
-        
-        document.head.insertAdjacentHTML('beforeend', printStyles);
+        // Initialize animations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Staggered animations for order cards
+            const loadingElements = document.querySelectorAll('.loading');
+            loadingElements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.1}s`;
+            });
+            
+            // Add hover effects
+            document.querySelectorAll('.order-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
     </script>
 </body>
 </html>

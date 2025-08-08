@@ -66,6 +66,22 @@
             <transport-guarantee>NONE</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
+    <filter>
+    <filter-name>AuthFilter</filter-name>
+    <filter-class>com.pahana.bookshop.filter.AuthFilter</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>AuthFilter</filter-name>
+    <url-pattern>/dashboard/*</url-pattern>
+    <url-pattern>/customers/*</url-pattern>
+    <url-pattern>/orders/*</url-pattern>
+    <url-pattern>/books/*</url-pattern>
+    <url-pattern>/customer-dashboard</url-pattern>
+    <url-pattern>/customer-orders</url-pattern>
+    <url-pattern>/customer-profile</url-pattern>
+    <url-pattern>/cart</url-pattern>
+    <url-pattern>/checkout</url-pattern>
+</filter-mapping>
 
     <!-- MIME type mappings -->
     <mime-mapping>
