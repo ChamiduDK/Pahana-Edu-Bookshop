@@ -1021,6 +1021,14 @@
                         Books
                     </a>
                 </div>
+                <c:if test="${sessionScope.user.role eq 'ADMIN'}">
+                    <div class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/staff">
+                            <i class="fas fa-user-tie"></i>
+                            Staff Management
+                        </a>
+                    </div>
+                </c:if>
             </div>
             
             <div class="nav-section">
