@@ -19,10 +19,10 @@ import java.io.IOException;
     "/customer-orders",
     "/customer-profile",
     "/cart",
-    "/checkout"
+    "/checkout",
+    "/register"
 })
 public class AuthFilter implements Filter {
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -31,13 +31,14 @@ public class AuthFilter implements Filter {
         HttpSession session = httpRequest.getSession(false);
         String path = httpRequest.getServletPath();
 
-        // Allow public access to login-related URLs
-        if (path.equals("/login") || path.equals("/login.jsp") || path.equals("/customer-logout")) {
+        // Allow public access
+        if (path.equals("/login") || path.equals("/login.jsp") || path.equals("/customer-logout") || 
+            path.equals("/register") || path.equals("/index.jsp")) {
             chain.doFilter(request, response);
             return;
         }
 
-        // Check for admin/staff authentication
+        // Admin/staff URLs
         if (path.startsWith("/dashboard") || path.startsWith("/customers") ||
             path.startsWith("/orders") || path.startsWith("/books")) {
             User user = (session != null) ? (User) session.getAttribute("user") : null;
@@ -46,7 +47,7 @@ public class AuthFilter implements Filter {
                 return;
             }
         }
-        // Check for customer authentication
+        // Customer URLs
         else if (path.equals("/customer-dashboard") || path.equals("/customer-orders") ||
                  path.equals("/customer-profile") || path.equals("/cart") || path.equals("/checkout")) {
             Customer customer = (session != null) ? (Customer) session.getAttribute("customer") : null;
@@ -56,7 +57,6 @@ public class AuthFilter implements Filter {
             }
         }
 
-        // Continue with the request
         chain.doFilter(request, response);
     }
 }
