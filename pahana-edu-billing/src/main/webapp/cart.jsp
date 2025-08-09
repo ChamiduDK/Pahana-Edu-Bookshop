@@ -11,24 +11,19 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Reuse styles from customer-dashboard.jsp */
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --warning-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             --primary-color: #667eea;
             --dark-color: #2d3748;
             --border-radius: 24px;
             --shadow-light: 0 4px 25px rgba(0, 0, 0, 0.08);
-            --shadow-medium: 0 8px 50px rgba(0, 0, 0, 0.12);
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: rgba(247, 250, 252, 0.8);
             color: #2d3748;
-            overflow-x: hidden;
         }
 
         .header {
@@ -44,7 +39,6 @@
             background: var(--primary-gradient);
             color: white;
             padding: 3rem 0;
-            position: relative;
         }
 
         .page-title {
@@ -59,21 +53,34 @@
             padding: 2rem;
         }
 
+        .btn-update, .btn-remove, .btn-checkout {
+            border-radius: 16px;
+            padding: 0.5rem 1rem;
+        }
+
+        .btn-update {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+        }
+
+        .btn-remove {
+            background: #ef4444;
+            color: white;
+            border: none;
+        }
+
         .btn-checkout {
             background: var(--success-gradient);
             color: white;
             border: none;
-            border-radius: 16px;
             padding: 0.75rem 1.5rem;
             font-weight: 600;
         }
 
-        .btn-remove {
-            background: var(--secondary-gradient);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            padding: 0.5rem;
+        .form-control-sm {
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
         }
     </style>
 </head>
@@ -82,12 +89,10 @@
     <nav class="header navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="${pageContext.request.contextPath}/customer-dashboard">
-                <div class="brand-icon">
-                    <i class="fas fa-book"></i>
-                </div>
-                <span class="brand-text">Pahana Edu Bookshop</span>
+                <i class="fas fa-book"></i> Pahana Edu Bookshop
             </a>
             <div class="navbar-nav">
+                <a class="nav-link active" href="${pageContext.request.contextPath}/cart"><i class="fas fa-shopping-cart"></i> Cart</a>
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-user-circle me-2"></i>${sessionScope.customer.name}
@@ -125,42 +130,56 @@
 
         <div class="cart-table">
             <c:choose>
-                <c:when test="${empty sessionScope.cart.items}">
-                    <p>Your cart is empty. <a href="${pageContext.request.contextPath}/customer-dashboard">Browse books</a>.</p>
+                <c:when test="${empty cartItems}">
+                    <p>Your cart is empty. <a href="${pageContext.request.contextPath}/customer-dashboard">Continue shopping</a>.</p>
                 </c:when>
                 <c:otherwise>
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>Book</th>
-                                <th>Author</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
-                                <th>Total</th>
-                                <th>Action</th>
+                                <th>Subtotal</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items="${sessionScope.cart.items}" var="item">
+                            <c:set var="cartTotal" value="${0}"/>
+                            <c:forEach items="${cartItems}" var="item">
                                 <tr>
-                                    <td>${item.book.title}</td>
-                                    <td>${item.book.author}</td>
-                                    <td><fmt:formatNumber value="${item.book.price}" pattern="0.00"/> LKR</td>
-                                    <td>${item.quantity}</td>
-                                    <td><fmt:formatNumber value="${item.book.price * item.quantity}" pattern="0.00"/> LKR</td>
+                                    <td>${item.book.title} by ${item.book.author}</td>
+                                    <td><fmt:formatNumber value="${item.unitPrice}" pattern="0.00"/> LKR</td>
                                     <td>
-                                        <form method="post" action="${pageContext.request.contextPath}/cart">
+                                        <form method="post" action="${pageContext.request.contextPath}/cart" class="d-inline">
+                                            <input type="hidden" name="action" value="update">
+                                            <input type="hidden" name="bookId" value="${item.bookId}">
+                                            <input type="number" name="quantity" value="${item.quantity}" min="1" max="${item.book.stockQuantity}" class="form-control-sm w-25 d-inline">
+                                            <button type="submit" class="btn btn-update btn-sm">Update</button>
+                                        </form>
+                                    </td>
+                                    <td><fmt:formatNumber value="${item.subtotal}" pattern="0.00"/> LKR</td>
+                                    <td>
+                                        <form method="post" action="${pageContext.request.contextPath}/cart" class="d-inline">
                                             <input type="hidden" name="action" value="remove">
-                                            <input type="hidden" name="bookId" value="${item.book.id}">
-                                            <button type="submit" class="btn btn-remove"><i class="fas fa-trash"></i></button>
+                                            <input type="hidden" name="bookId" value="${item.bookId}">
+                                            <button type="submit" class="btn btn-remove btn-sm">Remove</button>
                                         </form>
                                     </td>
                                 </tr>
+                                <c:set var="cartTotal" value="${cartTotal + item.subtotal}"/>
                             </c:forEach>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                                <td><strong><fmt:formatNumber value="${cartTotal}" pattern="0.00"/> LKR</strong></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     </table>
                     <div class="text-end">
-                        <h4>Total: <fmt:formatNumber value="${sessionScope.cart.items.stream().map(item -> item.book.price * item.quantity).sum()}" pattern="0.00"/> LKR</h4>
+                        <a href="${pageContext.request.contextPath}/customer-dashboard" class="btn btn-link">Continue Shopping</a>
                         <a href="${pageContext.request.contextPath}/checkout" class="btn btn-checkout">Proceed to Checkout</a>
                     </div>
                 </c:otherwise>
