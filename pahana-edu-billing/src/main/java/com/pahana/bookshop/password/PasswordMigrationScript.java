@@ -1,4 +1,4 @@
-package com.pahana.bookshop.model;
+package com.pahana.bookshop.password;
 
 import com.pahana.bookshop.dao.UserDAO;
 import com.pahana.bookshop.model.User;
