@@ -2,6 +2,7 @@ package com.pahana.bookshop.dao;
 
 import com.pahana.bookshop.config.DatabaseConnection;
 import com.pahana.bookshop.model.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,17 +16,19 @@ public class UserDAO {
     }
 
     public User authenticate(String username, String password) throws SQLException {
-        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+        String sql = "SELECT * FROM users WHERE username = ?";
 
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, username);
-            pstmt.setString(2, password);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return mapResultSetToUser(rs);
+                    String storedHash = rs.getString("password");
+                    if (BCrypt.checkpw(password, storedHash)) {
+                        return mapResultSetToUser(rs);
+                    }
                 }
             }
         }
@@ -90,7 +93,7 @@ public class UserDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, user.getUsername());
-            pstmt.setString(2, user.getPassword());
+            pstmt.setString(2, user.getPassword()); // Password is already hashed
             pstmt.setString(3, user.getEmail());
             pstmt.setString(4, user.getRole());
 
@@ -124,12 +127,13 @@ public class UserDAO {
     }
 
     public boolean updatePassword(int userId, String newPassword) throws SQLException {
+        String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
         String sql = "UPDATE users SET password = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?";
 
         try (Connection conn = dbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, newPassword);
+            pstmt.setString(1, hashedPassword);
             pstmt.setInt(2, userId);
 
             return pstmt.executeUpdate() > 0;
@@ -212,7 +216,7 @@ public class UserDAO {
         User user = new User();
         user.setId(rs.getInt("id"));
         user.setUsername(rs.getString("username"));
-        user.setPassword(rs.getString("password"));
+        user.setPassword(rs.getString("password")); // Stores hashed password
         user.setEmail(rs.getString("email"));
         user.setRole(rs.getString("role"));
         user.setCreatedAt(rs.getTimestamp("created_at"));

@@ -2,6 +2,7 @@ package com.pahana.bookshop.service;
 
 import com.pahana.bookshop.dao.UserDAO;
 import com.pahana.bookshop.model.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -56,6 +57,9 @@ public class UserService {
         if (getUserByEmail(user.getEmail()) != null) {
             throw new IllegalArgumentException("Email already exists");
         }
+        
+        // Hash the password before storing
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         
         return userDAO.create(user);
     }
