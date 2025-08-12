@@ -10,10 +10,10 @@
         Educational bookshop management system with customer accounts,
         order management, and automated billing via email.
     </description>
+    
 
     <!-- Welcome file list -->
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
