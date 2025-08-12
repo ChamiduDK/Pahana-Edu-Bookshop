@@ -128,9 +128,16 @@ public class OrderService {
         if (order.getCustomerId() <= 0) {
             throw new IllegalArgumentException("Valid customer ID is required");
         }
-        if (order.getPlacedByUserId() <= 0) {
-            throw new IllegalArgumentException("Valid user ID is required");
+        
+        // Validate placedByUserId based on order type
+        if (order.getPlacedByUserId() != null) {
+            // This is an admin-placed order
+            if (order.getPlacedByUserId() <= 0) {
+                throw new IllegalArgumentException("Valid user ID is required when placing order as admin");
+            }
         }
+        // If placedByUserId is null, this is a customer order - no validation needed for this field
+        
         if (order.getOrderItems() == null || order.getOrderItems().isEmpty()) {
             throw new IllegalArgumentException("Order must contain at least one item");
         }

@@ -25,7 +25,14 @@ public class OrderDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             pstmt.setInt(1, order.getCustomerId());
-            pstmt.setInt(2, order.getPlacedByUserId());
+            
+            // Handle nullable placedByUserId
+            if (order.getPlacedByUserId() != null) {
+                pstmt.setInt(2, order.getPlacedByUserId());
+            } else {
+                pstmt.setNull(2, Types.INTEGER);
+            }
+            
             pstmt.setBigDecimal(3, order.getTotalAmount());
             pstmt.setString(4, order.getStatus());
             
@@ -58,10 +65,11 @@ public class OrderDAO {
     }
     
     public Order findById(int id) throws SQLException {
+        // Use LEFT JOIN to handle null placed_by_user_id
         String sql = "SELECT o.*, c.account_number, c.name as customer_name, c.address, c.telephone, c.email as customer_email, " +
                     "u.username as placed_by_username FROM orders o " +
                     "JOIN customers c ON o.customer_id = c.id " +
-                    "JOIN users u ON o.placed_by_user_id = u.id " +
+                    "LEFT JOIN users u ON o.placed_by_user_id = u.id " +
                     "WHERE o.id = ?";
         
         try (Connection conn = dbConnection.getConnection();
@@ -82,10 +90,11 @@ public class OrderDAO {
     
     public List<Order> findByCustomerId(int customerId) throws SQLException {
         List<Order> orders = new ArrayList<>();
+        // Use LEFT JOIN to handle null placed_by_user_id
         String sql = "SELECT o.*, c.account_number, c.name as customer_name, c.address, c.telephone, c.email as customer_email, " +
                     "u.username as placed_by_username FROM orders o " +
                     "JOIN customers c ON o.customer_id = c.id " +
-                    "JOIN users u ON o.placed_by_user_id = u.id " +
+                    "LEFT JOIN users u ON o.placed_by_user_id = u.id " +
                     "WHERE o.customer_id = ? ORDER BY o.order_date DESC";
         
         try (Connection conn = dbConnection.getConnection();
@@ -106,10 +115,11 @@ public class OrderDAO {
     
     public List<Order> findAll() throws SQLException {
         List<Order> orders = new ArrayList<>();
+        // Use LEFT JOIN to handle null placed_by_user_id
         String sql = "SELECT o.*, c.account_number, c.name as customer_name, c.address, c.telephone, c.email as customer_email, " +
                     "u.username as placed_by_username FROM orders o " +
                     "JOIN customers c ON o.customer_id = c.id " +
-                    "JOIN users u ON o.placed_by_user_id = u.id " +
+                    "LEFT JOIN users u ON o.placed_by_user_id = u.id " +
                     "ORDER BY o.order_date DESC";
         
         try (Connection conn = dbConnection.getConnection();
@@ -175,7 +185,15 @@ public class OrderDAO {
         Order order = new Order();
         order.setId(rs.getInt("id"));
         order.setCustomerId(rs.getInt("customer_id"));
-        order.setPlacedByUserId(rs.getInt("placed_by_user_id"));
+        
+        // Handle nullable placed_by_user_id
+        int placedByUserId = rs.getInt("placed_by_user_id");
+        if (rs.wasNull()) {
+            order.setPlacedByUserId(null);
+        } else {
+            order.setPlacedByUserId(placedByUserId);
+        }
+        
         order.setTotalAmount(rs.getBigDecimal("total_amount"));
         order.setStatus(rs.getString("status"));
         order.setOrderDate(rs.getTimestamp("order_date"));
@@ -190,11 +208,14 @@ public class OrderDAO {
         customer.setEmail(rs.getString("customer_email"));
         order.setCustomer(customer);
         
-        // Set user information
-        User user = new User();
-        user.setId(rs.getInt("placed_by_user_id"));
-        user.setUsername(rs.getString("placed_by_username"));
-        order.setPlacedByUser(user);
+        // Set user information (only if placed_by_user_id is not null)
+        String placedByUsername = rs.getString("placed_by_username");
+        if (placedByUsername != null) {
+            User user = new User();
+            user.setId(placedByUserId);
+            user.setUsername(placedByUsername);
+            order.setPlacedByUser(user);
+        }
         
         return order;
     }
