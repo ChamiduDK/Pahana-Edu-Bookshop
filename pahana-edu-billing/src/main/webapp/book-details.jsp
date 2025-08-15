@@ -184,7 +184,7 @@
         .main-content {
             margin-left: var(--sidebar-width);
             min-height: 100vh;
-            background: rgba(247, 250, 252, 0.8);
+            background: #f1f5f9;
             backdrop-filter: blur(20px);
         }
 

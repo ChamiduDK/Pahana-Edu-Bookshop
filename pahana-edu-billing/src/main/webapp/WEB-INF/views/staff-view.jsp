@@ -185,7 +185,7 @@ System: var(--shadow-medium);
         .main-content {
             margin-left: var(--sidebar-width);
             min-height: 100vh;
-            background: rgba(247, 250, 252, 0.8);
+            background:#f1f5f9;
             backdrop-filter: blur(20px);
         }
 
@@ -262,9 +262,7 @@ System: box-shadow: var(--shadow-light);
             color: white;
             font-size: 2rem;
             margin: 0 auto 1.5rem;
-            box-shadow: varස
-
-System: var(--shadow-light);
+            box-shadow:var(--shadow-light);
         }
 
         .btn-group-custom {
