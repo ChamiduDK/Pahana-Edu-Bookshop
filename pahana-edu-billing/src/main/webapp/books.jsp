@@ -298,8 +298,10 @@
 
         .book-actions {
             display: flex;
-            gap: 0.5rem;
-            justify-content: center;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
         }
 
         .action-btn {
