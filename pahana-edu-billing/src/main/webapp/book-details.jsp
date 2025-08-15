@@ -215,6 +215,7 @@
 
         .content-area {
             padding: 2.5rem;
+            background-color: #f1f5f9;
         }
 
         /* Book Details Card */
