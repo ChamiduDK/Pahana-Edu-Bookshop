@@ -18,6 +18,7 @@
             --warning-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
             --dark-gradient: linear-gradient(135deg, #434343 0%, #000000 100%);
+            --info-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             
             --primary-color: #667eea;
             --secondary-color: #f093fb;
@@ -26,6 +27,7 @@
             --danger-color: #fa709a;
             --dark-color: #2d3748;
             --light-color: #f7fafc;
+            --info-color: #667eea;
             
             --sidebar-width: 320px;
             --topbar-height: 80px;
@@ -539,8 +541,6 @@
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
         }
 
-        
-
         .stat-title {
             color: #64748b;
             font-size: 0.9rem;
@@ -682,7 +682,7 @@
             display: flex;
             align-items: center;
             padding: 1.5rem 0;
-            border-bottom: 1px solid #393a3b;
+            border-bottom: 1px solid #e2e8f0;
             transition: all 0.3s ease;
         }
 
@@ -734,6 +734,98 @@
         .status-processing {
             background: rgba(6, 182, 212, 0.1);
             color: #0891b2;
+        }
+
+        /* Help Section Styles */
+        .help-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            background: rgba(99, 102, 241, 0.02);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .help-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .help-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--info-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .help-content h6 {
+            margin: 0;
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .help-content p {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.8rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* Stock Item Styling */
+        .stock-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.1);
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .stock-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .stock-info {
+            flex-grow: 1;
+        }
+
+        .stock-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .stock-author {
+            color: #64748b;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .stock-quantity {
+            background: var(--danger-gradient);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Session Timer */
@@ -819,20 +911,32 @@
             }
 
             .topbar {
-                padding: 0 1.5rem;
+                padding: 0 1rem;
+                height: 70px;
+            }
+            
+            .topbar-title h4 {
+                font-size: 1.25rem;
             }
 
             .content-area {
-                padding: 2rem 1.5rem;
+                padding: 1.5rem 1rem;
             }
             
             .welcome-title {
+                font-size: 1.75rem;
+            }
+            
+            .stat-value {
                 font-size: 2rem;
             }
             
-            .welcome-stats {
-                flex-direction: column;
-                gap: 1rem;
+            .card-body {
+                padding: 1.5rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem;
             }
         }
 
@@ -860,32 +964,20 @@
             }
 
             .topbar {
-                padding: 0 1rem;
-                height: 70px;
+                flex-direction: column;
+                height: auto;
+                padding: 1rem;
+                gap: 1rem;
+                align-items: flex-start;
             }
             
-            .topbar-title h4 {
-                font-size: 1.25rem;
-            }
-
-            .content-area {
-                padding: 1.5rem 1rem;
+            .topbar-title {
+                width: 100%;
             }
             
-            .welcome-title {
-                font-size: 1.75rem;
-            }
-            
-            .stat-value {
-                font-size: 2rem;
-            }
-            
-            .card-body {
-                padding: 1.5rem;
-            }
-            
-            .stat-card {
-                padding: 1.5rem;
+            .welcome-stats {
+                flex-direction: column;
+                gap: 1rem;
             }
         }
 
@@ -960,6 +1052,50 @@
             }
         }
 
+        /* Mobile Overlay */
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 998;
+            display: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+        
+        /* Improved mobile sidebar */
+        @media (max-width: 992px) {
+            .sidebar {
+                box-shadow: var(--shadow-heavy);
+            }
+        }
+        
+        /* Ripple Effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
         /* Scrollbar Styling */
         ::-webkit-scrollbar {
             width: 8px;
@@ -1031,28 +1167,20 @@
                 </c:if>
             </div>
             
-            <div class="nav-section">
-                <div class="nav-section-title">Analytics</div>
-                <div class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-chart-line"></i>
-                        Reports
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-chart-bar"></i>
-                        Analytics
-                    </a>
-                </div>
-            </div>
+            
             
             <div class="nav-section">
-                <div class="nav-section-title">System</div>
+                <div class="nav-section-title">Support</div>
                 <div class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-cog"></i>
-                        Settings
+                    <a class="nav-link" href="#" onclick="showHelpModal(); return false;">
+                        <i class="fas fa-question-circle"></i>
+                        Help & Support
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" href="#" onclick="showUserManualModal(); return false;">
+                        <i class="fas fa-book"></i>
+                        User Manual
                     </a>
                 </div>
             </div>
@@ -1330,6 +1458,283 @@
         </div>
     </div>
 
+    <!-- Help Modal -->
+    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="helpModalLabel">
+                        <i class="fas fa-question-circle me-2"></i>
+                        Help & Support - Pahana Edu Bookshop
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">Getting Started</h6>
+                            <div class="help-item">
+                                <div class="help-icon">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="help-content">
+                                    <h6>Dashboard Overview</h6>
+                                    <p>Your dashboard shows key business metrics including total customers, orders, books in stock, and pending orders. Use this to get a quick overview of your bookshop's performance.</p>
+                                </div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="help-content">
+                                    <h6>Managing Customers</h6>
+                                    <p>Add new customers, view customer details, and track their purchase history. Navigate to Customers section to manage your customer database.</p>
+                                </div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-icon">
+                                    <i class="fas fa-book-open"></i>
+                                </div>
+                                <div class="help-content">
+                                    <h6>Book Management</h6>
+                                    <p>Add new books, update prices, manage stock levels, and categorize your inventory. The system alerts you when stock levels are low.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">Order Management</h6>
+                            <div class="help-item">
+                                <div class="help-icon">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </div>
+                                <div class="help-content">
+                                    <h6>Creating Orders</h6>
+                                    <p>Create new orders by selecting customers and adding books. The system calculates totals automatically and tracks order status.</p>
+                                </div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-icon">
+                                    <i class="fas fa-cog"></i>
+                                </div>
+                                <div class="help-content">
+                                    <h6>Order Processing</h6>
+                                    <p>Track orders through different statuses: Pending, Processing, and Delivered. Update order status as you fulfill customer requests.</p>
+                                </div>
+                            </div>
+                            <div class="help-item">
+                                <div class="help-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="help-content">
+                                    <h6>Reports & Analytics</h6>
+                                    <p>Generate sales reports, view business analytics, check inventory reports, and analyze financial performance to make informed decisions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <h6 class="fw-bold mb-3">Troubleshooting</h6>
+                            <div class="accordion" id="troubleshootingAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            Can't access certain features?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#troubleshootingAccordion">
+                                        <div class="accordion-body">
+                                            Some features may be restricted based on your user role. ADMIN users have access to all features including staff management, while STAFF users have access to core bookshop operations. Contact your administrator if you need additional permissions.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            <i class="fas fa-clock me-2"></i>
+                                            Session timeout issues?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#troubleshootingAccordion">
+                                        <div class="accordion-body">
+                                            Your session timer shows remaining time at the top of the page. Sessions expire after 30 minutes of inactivity for security. Save your work frequently and you'll be automatically logged out when the session expires.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            <i class="fas fa-mobile-alt me-2"></i>
+                                            Mobile/tablet viewing issues?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#troubleshootingAccordion">
+                                        <div class="accordion-body">
+                                            The dashboard is fully responsive. On mobile devices, use the menu button (☰) to access the sidebar navigation. The interface automatically adapts to your screen size for optimal viewing.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="showUserManualModal(); $('#helpModal').modal('hide');">
+                        <i class="fas fa-book"></i> View User Manual
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Manual Modal -->
+    <div class="modal fade" id="userManualModal" tabindex="-1" aria-labelledby="userManualModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userManualModalLabel">
+                        <i class="fas fa-book me-2"></i>
+                        User Manual - Pahana Edu Bookshop Management System
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <nav class="nav nav-pills nav-fill mb-4">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#manual-overview">Overview</button>
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#manual-customers">Customers</button>
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#manual-books">Books</button>
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#manual-orders">Orders</button>
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#manual-reports">Reports</button>
+                            </nav>
+                            
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="manual-overview">
+                                    <h6 class="fw-bold">System Overview</h6>
+                                    <p>The Pahana Edu Bookshop Management System is designed to streamline your bookshop operations with the following key features:</p>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Dashboard:</strong> Real-time overview of business metrics</li>
+                                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Customer Management:</strong> Comprehensive customer database</li>
+                                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Inventory Control:</strong> Book catalog with stock management</li>
+                                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Order Processing:</strong> Complete order lifecycle management</li>
+                                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Reports & Analytics:</strong> Business intelligence and reporting</li>
+                                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>User Management:</strong> Role-based access control</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="tab-pane fade" id="manual-customers">
+                                    <h6 class="fw-bold">Customer Management</h6>
+                                    <div class="mb-4">
+                                        <h6 class="text-primary">Adding New Customers</h6>
+                                        <ol>
+                                            <li>Navigate to <strong>Customers</strong> from the sidebar menu</li>
+                                            <li>Click the <strong>"Add New Customer"</strong> button</li>
+                                            <li>Fill in customer details: Name, Email, Phone, Address</li>
+                                            <li>Click <strong>"Save Customer"</strong> to add to database</li>
+                                        </ol>
+                                    </div>
+                                    <div class="mb-4">
+                                        <h6 class="text-primary">Managing Existing Customers</h6>
+                                        <ul>
+                                            <li>View all customers in a searchable table format</li>
+                                            <li>Edit customer information using the edit button</li>
+                                            <li>View customer order history and statistics</li>
+                                            <li>Delete customers (with confirmation) if needed</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="tab-pane fade" id="manual-books">
+                                    <h6 class="fw-bold">Book Management</h6>
+                                    <div class="mb-4">
+                                        <h6 class="text-primary">Adding Books to Inventory</h6>
+                                        <ol>
+                                            <li>Go to <strong>Books</strong> section</li>
+                                            <li>Click <strong>"Add New Book"</strong></li>
+                                            <li>Enter book details: Title, Author, ISBN, Category</li>
+                                            <li>Set pricing and initial stock quantity</li>
+                                            <li>Save to add book to inventory</li>
+                                        </ol>
+                                    </div>
+                                    <div class="mb-4">
+                                        <h6 class="text-primary">Stock Management</h6>
+                                        <ul>
+                                            <li>Monitor stock levels from the dashboard</li>
+                                            <li>Receive low stock alerts automatically</li>
+                                            <li>Update stock quantities when new shipments arrive</li>
+                                            <li>Set minimum stock thresholds for alerts</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="tab-pane fade" id="manual-orders">
+                                    <h6 class="fw-bold">Order Management</h6>
+                                    <div class="mb-4">
+                                        <h6 class="text-primary">Creating New Orders</h6>
+                                        <ol>
+                                            <li>Navigate to <strong>Orders</strong> section</li>
+                                            <li>Click <strong>"Create New Order"</strong></li>
+                                            <li>Select or create customer</li>
+                                            <li>Add books to order using search or browse</li>
+                                            <li>Review order total and confirm</li>
+                                        </ol>
+                                    </div>
+                                    <div class="mb-4">
+                                        <h6 class="text-primary">Order Status Management</h6>
+                                        <ul>
+                                            <li><strong>Pending:</strong> New orders awaiting processing</li>
+                                            <li><strong>Processing:</strong> Orders being prepared/packed</li>
+                                            <li><strong>Delivered:</strong> Completed orders</li>
+                                            <li>Update status as orders progress through fulfillment</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="tab-pane fade" id="manual-reports">
+                                    <h6 class="fw-bold">Reports & Analytics</h6>
+                                    <div class="mb-4">
+                                        <h6 class="text-primary">Available Reports</h6>
+                                        <ul>
+                                            <li><strong>Sales Reports:</strong> Track revenue, best-selling books, sales trends</li>
+                                            <li><strong>Business Analytics:</strong> Customer behavior, seasonal patterns, growth metrics</li>
+                                            <li><strong>Inventory Reports:</strong> Stock levels, turnover rates, reorder recommendations</li>
+                                            <li><strong>Financial Reports:</strong> Profit analysis, expense tracking, tax reporting</li>
+                                        </ul>
+                                    </div>
+                                    <div class="mb-4">
+                                        <h6 class="text-primary">Generating Reports</h6>
+                                        <ol>
+                                            <li>Select the desired report type from the Reports menu</li>
+                                            <li>Choose date range and filters</li>
+                                            <li>Click <strong>"Generate Report"</strong></li>
+                                            <li>Export reports as PDF or Excel for external use</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="downloadUserManual()">
+                        <i class="fas fa-download"></i> Download PDF Manual
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Mobile Menu Overlay -->
     <div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar()"></div>
 
@@ -1398,6 +1803,46 @@
             modal.show();
         }
         
+        // Help Modal Functions
+        function showHelpModal() {
+            const helpModal = new bootstrap.Modal(document.getElementById('helpModal'));
+            helpModal.show();
+        }
+        
+        function showUserManualModal() {
+            const userManualModal = new bootstrap.Modal(document.getElementById('userManualModal'));
+            userManualModal.show();
+        }
+        
+        function downloadUserManual() {
+            // Create a temporary link to simulate PDF download
+            const link = document.createElement('a');
+            link.href = '#'; // In real implementation, this would be the PDF file URL
+            link.download = 'Pahana_Edu_Bookshop_User_Manual.pdf';
+            
+            // Show download notification
+            showNotification('User Manual download started! (Feature coming soon)', 'info');
+        }
+        
+        function showNotification(message, type = 'success') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
+        
         // Mobile sidebar toggle
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -1436,9 +1881,26 @@
             // Close mobile sidebar when clicking on links
             const navLinks = document.querySelectorAll('.nav-link');
             navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    if (window.innerWidth <= 992) {
-                        toggleSidebar();
+                link.addEventListener('click', (e) => {
+                    // Don't close sidebar for help links (they have onclick handlers)
+                    if (!link.getAttribute('onclick')) {
+                        if (window.innerWidth <= 992) {
+                            toggleSidebar();
+                        }
+                    }
+                });
+            });
+            
+            // Add click handlers for report navigation
+            const reportLinks = document.querySelectorAll('a[href*="/reports"], a[href*="/analytics"]');
+            reportLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    
+                    // Show coming soon notification for now
+                    if (href.includes('/reports') || href.includes('/analytics')) {
+                        showNotification('Reports & Analytics features are being developed and will be available soon!', 'info');
                     }
                 });
             });
@@ -1504,97 +1966,72 @@
                 }, 600);
             });
         });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Alt + H for Help
+            if (e.altKey && e.key === 'h') {
+                e.preventDefault();
+                showHelpModal();
+            }
+            
+            // Alt + M for User Manual
+            if (e.altKey && e.key === 'm') {
+                e.preventDefault();
+                showUserManualModal();
+            }
+            
+            // Ctrl + / for Quick Actions (focus first action button)
+            if (e.ctrlKey && e.key === '/') {
+                e.preventDefault();
+                const firstActionBtn = document.querySelector('.action-btn');
+                if (firstActionBtn) {
+                    firstActionBtn.focus();
+                }
+            }
+        });
+        
+        // Add tooltips for better UX
+        function initializeTooltips() {
+            // Add title attributes for helpful tooltips
+            const sessionTimer = document.getElementById('sessionTimer');
+            if (sessionTimer) {
+                sessionTimer.title = 'Your session will expire when this timer reaches 00:00';
+            }
+            
+            // Add tooltips to stat cards
+            document.querySelectorAll('.stat-card').forEach(card => {
+                const title = card.querySelector('.stat-title').textContent;
+                card.title = `Click to view detailed ${title.toLowerCase()} information`;
+            });
+        }
+        
+        // Call initialize tooltips when DOM is ready
+        document.addEventListener('DOMContentLoaded', initializeTooltips);
+        
+        // Add search functionality for help modal
+        function filterHelpContent(searchTerm) {
+            const helpItems = document.querySelectorAll('.help-item');
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            
+            helpItems.forEach(item => {
+                const content = item.textContent.toLowerCase();
+                if (content.includes(searchTerm.toLowerCase())) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            accordionItems.forEach(item => {
+                const content = item.textContent.toLowerCase();
+                if (content.includes(searchTerm.toLowerCase())) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
     </script>
-    
-    <style>
-        /* Mobile Overlay */
-        .mobile-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            z-index: 998;
-            display: none;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-        
-        .mobile-overlay.show {
-            display: block;
-            opacity: 1;
-        }
-        
-        /* Improved mobile sidebar */
-        @media (max-width: 992px) {
-            .sidebar {
-                box-shadow: var(--shadow-heavy);
-            }
-        }
-        
-        /* Ripple Effect */
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(0);
-            animation: ripple-animation 0.6s linear;
-            pointer-events: none;
-        }
-        
-        @keyframes ripple-animation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-        
-        /* Stock Item Styling */
-        .stock-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);
-            border: 1px solid rgba(239, 68, 68, 0.1);
-            border-radius: var(--border-radius);
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .stock-item:hover {
-            transform: translateX(5px);
-            box-shadow: var(--shadow-light);
-        }
-        
-        .stock-info {
-            flex-grow: 1;
-        }
-        
-        .stock-title {
-            font-weight: 600;
-            color: var(--dark-color);
-            font-size: 0.9rem;
-            margin-bottom: 0.25rem;
-        }
-        
-        .stock-author {
-            color: #64748b;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        
-        .stock-quantity {
-            background: var(--danger-gradient);
-            color: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-    </style>
 </body>
 </html>
