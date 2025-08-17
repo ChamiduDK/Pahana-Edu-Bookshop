@@ -1,14 +1,19 @@
 package com.pahana.bookshop.filter;
 
-import com.pahana.bookshop.model.User;
-import com.pahana.bookshop.model.Customer;
+import java.io.IOException;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
+
+import com.pahana.bookshop.model.Customer;
+import com.pahana.bookshop.model.User;
 
 @WebFilter(urlPatterns = {
     "/dashboard/*",
@@ -32,8 +37,8 @@ public class AuthFilter implements Filter {
         String path = httpRequest.getServletPath();
 
         // Allow public access to these pages
-        if (path.equals("/login") || path.equals("/login.jsp") || 
-            path.equals("/customer-logout") || path.equals("/register") || 
+        if (path.equals("/login") || path.equals("/login.jsp") ||
+            path.equals("/customer-logout") || path.equals("/register") ||
             path.equals("/index.jsp") || path.equals("/") || path.equals("")) {
             chain.doFilter(request, response);
             return;
@@ -50,7 +55,7 @@ public class AuthFilter implements Filter {
         }
         // Customer URLs - require Customer session
         else if (path.equals("/customer-dashboard") || path.equals("/customer-orders") ||
-                 path.equals("/customer-profile") || path.equals("/cart") || 
+                 path.equals("/customer-profile") || path.equals("/cart") ||
                  path.equals("/checkout")) {
             Customer customer = (session != null) ? (Customer) session.getAttribute("customer") : null;
             if (customer == null) {

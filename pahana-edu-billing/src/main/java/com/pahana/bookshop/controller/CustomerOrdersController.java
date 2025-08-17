@@ -1,9 +1,8 @@
 package com.pahana.bookshop.controller;
 
-import com.pahana.bookshop.model.Customer;
-import com.pahana.bookshop.model.Order;
-import com.pahana.bookshop.service.OrderService;
-import com.pahana.bookshop.service.ServiceFactory;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,9 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
+
+import com.pahana.bookshop.model.Customer;
+import com.pahana.bookshop.model.Order;
+import com.pahana.bookshop.service.OrderService;
+import com.pahana.bookshop.service.ServiceFactory;
 
 @WebServlet("/customer-orders")
 public class CustomerOrdersController extends HttpServlet {
@@ -30,14 +31,14 @@ public class CustomerOrdersController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("customer");
-        
+
         // Check if customer is logged in
         if (customer == null) {
             request.setAttribute("error", "Please log in to view your orders");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
         }
-        
+
         if (customer.getId() <= 0) {
             // Invalid customer ID - force re-login
             session.invalidate();
@@ -49,24 +50,24 @@ public class CustomerOrdersController extends HttpServlet {
         try {
             // Get customer's orders
             List<Order> orders = orderService.getOrdersByCustomerId(customer.getId());
-            
+
             // Check for success message from order placement
             String orderSuccess = (String) session.getAttribute("orderSuccess");
             if (orderSuccess != null) {
                 request.setAttribute("success", orderSuccess);
                 session.removeAttribute("orderSuccess"); // Remove after displaying
             }
-            
+
             request.setAttribute("orders", orders);
             request.setAttribute("customer", customer);
             request.getRequestDispatcher("/customer-orders.jsp").forward(request, response);
-            
+
         } catch (SQLException e) {
             System.err.println("Database error while fetching customer orders: " + e.getMessage());
             e.printStackTrace();
             request.setAttribute("error", "Unable to load orders. Please try again later.");
             request.getRequestDispatcher("/customer-orders.jsp").forward(request, response);
-            
+
         } catch (Exception e) {
             System.err.println("Unexpected error while fetching customer orders: " + e.getMessage());
             e.printStackTrace();

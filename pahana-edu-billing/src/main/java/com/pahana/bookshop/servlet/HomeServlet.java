@@ -1,16 +1,17 @@
 package com.pahana.bookshop.servlet;
 
-import com.pahana.bookshop.dao.BookDAO;
-import com.pahana.bookshop.model.Book;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
+
+import com.pahana.bookshop.dao.BookDAO;
+import com.pahana.bookshop.model.Book;
 
 @WebServlet(name = "HomeServlet", urlPatterns = {"/", "/index.jsp"})
 public class HomeServlet extends HttpServlet {

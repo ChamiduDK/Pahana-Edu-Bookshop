@@ -1,12 +1,13 @@
 package com.pahana.bookshop.service;
 
-import com.pahana.bookshop.dao.UserDAO;
-import com.pahana.bookshop.model.User;
-import org.mindrot.jbcrypt.BCrypt;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import org.mindrot.jbcrypt.BCrypt;
+
+import com.pahana.bookshop.dao.UserDAO;
+import com.pahana.bookshop.model.User;
 
 public class UserService {
     private UserDAO userDAO;
@@ -47,31 +48,31 @@ public class UserService {
 
     public boolean createUser(User user) throws SQLException {
         validateUser(user);
-        
+
         // Check if username already exists
         if (getUserByUsername(user.getUsername()) != null) {
             throw new IllegalArgumentException("Username already exists");
         }
-        
+
         // Check if email already exists
         if (getUserByEmail(user.getEmail()) != null) {
             throw new IllegalArgumentException("Email already exists");
         }
-        
+
         // Hash the password before storing
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-        
+
         return userDAO.create(user);
     }
 
-    public boolean createStaff(String username, String password, String email, User createdBy) 
+    public boolean createStaff(String username, String password, String email, User createdBy)
             throws SQLException {
-        
+
         // Only admins can create staff
         if (createdBy == null || !createdBy.isAdmin()) {
             throw new IllegalArgumentException("Only administrators can create staff accounts");
         }
-        
+
         User staff = new User(username, password, email, "STAFF");
         return createUser(staff);
     }
@@ -80,21 +81,21 @@ public class UserService {
         if (updatedBy == null || !updatedBy.isAdmin()) {
             throw new IllegalArgumentException("Only administrators can update user accounts");
         }
-        
+
         validateUserForUpdate(user);
-        
+
         // Check if new username conflicts (excluding current user)
         User existingUser = getUserByUsername(user.getUsername());
         if (existingUser != null && existingUser.getId() != user.getId()) {
             throw new IllegalArgumentException("Username already exists");
         }
-        
+
         // Check if new email conflicts (excluding current user)
         existingUser = getUserByEmail(user.getEmail());
         if (existingUser != null && existingUser.getId() != user.getId()) {
             throw new IllegalArgumentException("Email already exists");
         }
-        
+
         return userDAO.update(user);
     }
 
@@ -102,20 +103,20 @@ public class UserService {
         if (deletedBy == null || !deletedBy.isAdmin()) {
             throw new IllegalArgumentException("Only administrators can delete user accounts");
         }
-        
+
         User userToDelete = getUserById(userId);
         if (userToDelete == null) {
             throw new IllegalArgumentException("User not found");
         }
-        
+
         if (userToDelete.isAdmin()) {
             throw new IllegalArgumentException("Cannot delete administrator accounts");
         }
-        
+
         if (userToDelete.getId() == deletedBy.getId()) {
             throw new IllegalArgumentException("Cannot delete your own account");
         }
-        
+
         return userDAO.delete(userId);
     }
 
@@ -123,20 +124,20 @@ public class UserService {
         if (updatedBy == null) {
             throw new IllegalArgumentException("User must be logged in to update password");
         }
-        
+
         // Users can update their own password, or admins can update any password
         if (userId != updatedBy.getId() && !updatedBy.isAdmin()) {
             throw new IllegalArgumentException("You can only update your own password");
         }
-        
+
         if (newPassword == null || newPassword.trim().isEmpty()) {
             throw new IllegalArgumentException("Password cannot be empty");
         }
-        
+
         if (newPassword.length() < 6) {
             throw new IllegalArgumentException("Password must be at least 6 characters long");
         }
-        
+
         return userDAO.updatePassword(userId, newPassword);
     }
 
@@ -164,39 +165,39 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
-        
+
         if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
             throw new IllegalArgumentException("Username is required");
         }
-        
+
         if (user.getUsername().length() < 3 || user.getUsername().length() > 50) {
             throw new IllegalArgumentException("Username must be between 3 and 50 characters");
         }
-        
+
         if (!user.getUsername().matches("^[a-zA-Z0-9_]+$")) {
             throw new IllegalArgumentException("Username can only contain letters, numbers, and underscores");
         }
-        
+
         if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
             throw new IllegalArgumentException("Password is required");
         }
-        
+
         if (user.getPassword().length() < 6) {
             throw new IllegalArgumentException("Password must be at least 6 characters long");
         }
-        
+
         if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
             throw new IllegalArgumentException("Email is required");
         }
-        
+
         if (!EMAIL_PATTERN.matcher(user.getEmail()).matches()) {
             throw new IllegalArgumentException("Invalid email format");
         }
-        
+
         if (user.getRole() == null || user.getRole().trim().isEmpty()) {
             throw new IllegalArgumentException("Role is required");
         }
-        
+
         if (!user.getRole().equals("ADMIN") && !user.getRole().equals("STAFF")) {
             throw new IllegalArgumentException("Role must be either ADMIN or STAFF");
         }
@@ -206,35 +207,35 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
-        
+
         if (user.getId() <= 0) {
             throw new IllegalArgumentException("Valid user ID is required");
         }
-        
+
         if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
             throw new IllegalArgumentException("Username is required");
         }
-        
+
         if (user.getUsername().length() < 3 || user.getUsername().length() > 50) {
             throw new IllegalArgumentException("Username must be between 3 and 50 characters");
         }
-        
+
         if (!user.getUsername().matches("^[a-zA-Z0-9_]+$")) {
             throw new IllegalArgumentException("Username can only contain letters, numbers, and underscores");
         }
-        
+
         if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
             throw new IllegalArgumentException("Email is required");
         }
-        
+
         if (!EMAIL_PATTERN.matcher(user.getEmail()).matches()) {
             throw new IllegalArgumentException("Invalid email format");
         }
-        
+
         if (user.getRole() == null || user.getRole().trim().isEmpty()) {
             throw new IllegalArgumentException("Role is required");
         }
-        
+
         if (!user.getRole().equals("ADMIN") && !user.getRole().equals("STAFF")) {
             throw new IllegalArgumentException("Role must be either ADMIN or STAFF");
         }

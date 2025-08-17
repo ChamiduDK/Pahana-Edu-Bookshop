@@ -1,11 +1,15 @@
 package com.pahana.bookshop.dao;
 
-import com.pahana.bookshop.config.DatabaseConnection;
-import com.pahana.bookshop.model.Customer;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.pahana.bookshop.config.DatabaseConnection;
+import com.pahana.bookshop.model.Customer;
 
 public class CustomerDAO {
     private DatabaseConnection dbConnection;
