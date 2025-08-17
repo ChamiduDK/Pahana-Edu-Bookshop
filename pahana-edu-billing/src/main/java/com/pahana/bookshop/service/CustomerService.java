@@ -1,10 +1,10 @@
 package com.pahana.bookshop.service;
 
-import com.pahana.bookshop.dao.CustomerDAO;
-import com.pahana.bookshop.model.Customer;
-
 import java.sql.SQLException;
 import java.util.List;
+
+import com.pahana.bookshop.dao.CustomerDAO;
+import com.pahana.bookshop.model.Customer;
 
 public class CustomerService {
     private CustomerDAO customerDAO;
