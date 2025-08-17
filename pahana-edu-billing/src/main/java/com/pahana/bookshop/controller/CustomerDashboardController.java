@@ -1,10 +1,8 @@
 package com.pahana.bookshop.controller;
 
-import com.pahana.bookshop.model.Book;
-import com.pahana.bookshop.model.Order;
-import com.pahana.bookshop.service.BookService;
-import com.pahana.bookshop.service.OrderService;
-import com.pahana.bookshop.service.ServiceFactory;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
+import com.pahana.bookshop.model.Book;
+import com.pahana.bookshop.model.Order;
+import com.pahana.bookshop.service.BookService;
+import com.pahana.bookshop.service.OrderService;
+import com.pahana.bookshop.service.ServiceFactory;
 
 @WebServlet("/customer-dashboard")
 public class CustomerDashboardController extends HttpServlet {

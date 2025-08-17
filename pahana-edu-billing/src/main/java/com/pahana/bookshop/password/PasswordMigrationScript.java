@@ -1,10 +1,12 @@
 package com.pahana.bookshop.password;
 
-import com.pahana.bookshop.dao.UserDAO;
-import com.pahana.bookshop.model.User;
-import org.mindrot.jbcrypt.BCrypt;
 import java.sql.SQLException;
 import java.util.List;
+
+import org.mindrot.jbcrypt.BCrypt;
+
+import com.pahana.bookshop.dao.UserDAO;
+import com.pahana.bookshop.model.User;
 
 public class PasswordMigrationScript {
     public static void main(String[] args) {

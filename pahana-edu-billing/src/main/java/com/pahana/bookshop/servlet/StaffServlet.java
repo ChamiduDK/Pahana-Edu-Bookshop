@@ -1,7 +1,8 @@
 package com.pahana.bookshop.servlet;
 
-import com.pahana.bookshop.model.User;
-import com.pahana.bookshop.service.UserService;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,9 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
+
+import com.pahana.bookshop.model.User;
+import com.pahana.bookshop.service.UserService;
 
 @WebServlet(name = "StaffServlet", urlPatterns = {"/staff"})
 public class StaffServlet extends HttpServlet {
@@ -23,9 +24,9 @@ public class StaffServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -40,7 +41,9 @@ public class StaffServlet extends HttpServlet {
         }
 
         String action = request.getParameter("action");
-        if (action == null) action = "list";
+        if (action == null) {
+			action = "list";
+		}
 
         try {
             switch (action) {
@@ -70,9 +73,9 @@ public class StaffServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -87,7 +90,9 @@ public class StaffServlet extends HttpServlet {
         }
 
         String action = request.getParameter("action");
-        if (action == null) action = "add";
+        if (action == null) {
+			action = "add";
+		}
 
         try {
             switch (action) {
@@ -110,78 +115,78 @@ public class StaffServlet extends HttpServlet {
         }
     }
 
-    private void listStaff(HttpServletRequest request, HttpServletResponse response) 
+    private void listStaff(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        
+
         List<User> staffList = userService.getStaffUsers();
         int totalStaff = userService.getTotalStaffCount();
         int totalUsers = userService.getTotalUserCount();
-        
+
         request.setAttribute("staffList", staffList);
         request.setAttribute("totalStaff", totalStaff);
         request.setAttribute("totalUsers", totalUsers);
-        
+
         request.getRequestDispatcher("/WEB-INF/views/staff.jsp").forward(request, response);
     }
 
-    private void showAddForm(HttpServletRequest request, HttpServletResponse response) 
+    private void showAddForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         request.setAttribute("action", "add");
         request.getRequestDispatcher("/WEB-INF/views/staff-form.jsp").forward(request, response);
     }
 
-    private void showEditForm(HttpServletRequest request, HttpServletResponse response) 
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        
+
         int staffId = Integer.parseInt(request.getParameter("id"));
         User staff = userService.getUserById(staffId);
-        
+
         if (staff == null) {
             request.setAttribute("error", "Staff member not found.");
             listStaff(request, response);
             return;
         }
-        
+
         if (!staff.isStaff()) {
             request.setAttribute("error", "User is not a staff member.");
             listStaff(request, response);
             return;
         }
-        
+
         request.setAttribute("staff", staff);
         request.setAttribute("action", "edit");
         request.getRequestDispatcher("/WEB-INF/views/staff-form.jsp").forward(request, response);
     }
 
-    private void viewStaff(HttpServletRequest request, HttpServletResponse response) 
+    private void viewStaff(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        
+
         int staffId = Integer.parseInt(request.getParameter("id"));
         User staff = userService.getUserById(staffId);
-        
+
         if (staff == null) {
             request.setAttribute("error", "Staff member not found.");
             listStaff(request, response);
             return;
         }
-        
+
         request.setAttribute("staff", staff);
         request.getRequestDispatcher("/WEB-INF/views/staff-view.jsp").forward(request, response);
     }
 
-    private void addStaff(HttpServletRequest request, HttpServletResponse response) 
+    private void addStaff(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
-        
+
         User currentUser = (User) request.getSession().getAttribute("user");
-        
+
         try {
             boolean success = userService.createStaff(username, password, email, currentUser);
-            
+
             if (success) {
                 request.setAttribute("success", "Staff member added successfully!");
             } else {
@@ -195,32 +200,32 @@ public class StaffServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/staff-form.jsp").forward(request, response);
             return;
         }
-        
+
         listStaff(request, response);
     }
 
-    private void updateStaff(HttpServletRequest request, HttpServletResponse response) 
+    private void updateStaff(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        
+
         int staffId = Integer.parseInt(request.getParameter("id"));
         String username = request.getParameter("username");
         String email = request.getParameter("email");
-        
+
         User staff = userService.getUserById(staffId);
         if (staff == null) {
             request.setAttribute("error", "Staff member not found.");
             listStaff(request, response);
             return;
         }
-        
+
         staff.setUsername(username);
         staff.setEmail(email);
-        
+
         User currentUser = (User) request.getSession().getAttribute("user");
-        
+
         try {
             boolean success = userService.updateUser(staff, currentUser);
-            
+
             if (success) {
                 request.setAttribute("success", "Staff member updated successfully!");
             } else {
@@ -233,28 +238,28 @@ public class StaffServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/staff-form.jsp").forward(request, response);
             return;
         }
-        
+
         listStaff(request, response);
     }
 
-    private void updatePassword(HttpServletRequest request, HttpServletResponse response) 
+    private void updatePassword(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        
+
         int staffId = Integer.parseInt(request.getParameter("id"));
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
-        
+
         if (!newPassword.equals(confirmPassword)) {
             request.setAttribute("error", "Passwords do not match.");
             showEditForm(request, response);
             return;
         }
-        
+
         User currentUser = (User) request.getSession().getAttribute("user");
-        
+
         try {
             boolean success = userService.updatePassword(staffId, newPassword, currentUser);
-            
+
             if (success) {
                 request.setAttribute("success", "Password updated successfully!");
             } else {
@@ -263,19 +268,19 @@ public class StaffServlet extends HttpServlet {
         } catch (IllegalArgumentException e) {
             request.setAttribute("error", e.getMessage());
         }
-        
+
         listStaff(request, response);
     }
 
-    private void deleteStaff(HttpServletRequest request, HttpServletResponse response) 
+    private void deleteStaff(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        
+
         int staffId = Integer.parseInt(request.getParameter("id"));
         User currentUser = (User) request.getSession().getAttribute("user");
-        
+
         try {
             boolean success = userService.deleteUser(staffId, currentUser);
-            
+
             if (success) {
                 request.setAttribute("success", "Staff member deleted successfully!");
             } else {
@@ -284,7 +289,7 @@ public class StaffServlet extends HttpServlet {
         } catch (IllegalArgumentException e) {
             request.setAttribute("error", e.getMessage());
         }
-        
+
         listStaff(request, response);
     }
 }

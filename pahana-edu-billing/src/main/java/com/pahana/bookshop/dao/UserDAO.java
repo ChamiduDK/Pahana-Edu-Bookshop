@@ -1,12 +1,17 @@
 package com.pahana.bookshop.dao;
 
-import com.pahana.bookshop.config.DatabaseConnection;
-import com.pahana.bookshop.model.User;
-import org.mindrot.jbcrypt.BCrypt;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.mindrot.jbcrypt.BCrypt;
+
+import com.pahana.bookshop.config.DatabaseConnection;
+import com.pahana.bookshop.model.User;
 
 public class UserDAO {
     private DatabaseConnection dbConnection;
@@ -98,7 +103,7 @@ public class UserDAO {
             pstmt.setString(4, user.getRole());
 
             int affectedRows = pstmt.executeUpdate();
-            
+
             if (affectedRows > 0) {
                 try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {

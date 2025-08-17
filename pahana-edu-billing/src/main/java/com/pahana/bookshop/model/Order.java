@@ -24,7 +24,7 @@ public class Order {
         this.totalAmount = totalAmount;
         this.status = status;
     }
-    
+
     // Constructor for customer orders (without placedByUserId)
     public Order(int customerId, BigDecimal totalAmount, String status) {
         this.customerId = customerId;
@@ -60,12 +60,12 @@ public class Order {
 
     public User getPlacedByUser() { return placedByUser; }
     public void setPlacedByUser(User placedByUser) { this.placedByUser = placedByUser; }
-    
+
     // Utility methods
     public boolean isCustomerOrder() {
         return placedByUserId == null;
     }
-    
+
     public boolean isAdminOrder() {
         return placedByUserId != null && placedByUserId > 0;
     }

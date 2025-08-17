@@ -1,22 +1,28 @@
 package com.pahana.bookshop.util;
 
-import com.pahana.bookshop.model.Order;
-import com.pahana.bookshop.model.OrderItem;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Properties;
 
-import javax.mail.*;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.Properties;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
+
+import com.pahana.bookshop.model.Order;
+import com.pahana.bookshop.model.OrderItem;
 
 public class EmailUtil {
     // SMTP configuration for Gmail
     private static final String SMTP_HOST = "smtp.gmail.com";
     private static final String SMTP_PORT = "587";
-    private static final String EMAIL_USERNAME = System.getenv("EMAIL_USERNAME") != null 
+    private static final String EMAIL_USERNAME = System.getenv("EMAIL_USERNAME") != null
         ? System.getenv("EMAIL_USERNAME") : "chamidudhilshan@gmail.com";
-    private static final String EMAIL_PASSWORD = System.getenv("EMAIL_PASSWORD") != null 
+    private static final String EMAIL_PASSWORD = System.getenv("EMAIL_PASSWORD") != null
         ? System.getenv("EMAIL_PASSWORD") : "bass lkdn lblg abwj"; // Replace with Gmail App Password
     private static final String COMPANY_NAME = "Pahana Edu Bookshop";
 
@@ -26,7 +32,7 @@ public class EmailUtil {
      */
     public void sendOrderConfirmation(Order order) {
         // Validate order and customer email
-        if (order == null || order.getCustomer() == null || 
+        if (order == null || order.getCustomer() == null ||
             order.getCustomer().getEmail() == null || order.getCustomer().getEmail().trim().isEmpty()) {
             System.err.println("Cannot send order confirmation: Invalid order or customer email");
             return;
@@ -44,7 +50,7 @@ public class EmailUtil {
 
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(EMAIL_USERNAME));
-            message.setRecipients(Message.RecipientType.TO, 
+            message.setRecipients(Message.RecipientType.TO,
                 InternetAddress.parse(order.getCustomer().getEmail()));
             message.setSubject("Order Confirmation - " + COMPANY_NAME);
 
@@ -58,7 +64,7 @@ public class EmailUtil {
             System.err.println("Failed to send order confirmation to: " + order.getCustomer().getEmail());
             e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("Unexpected error while sending order confirmation to: " + 
+            System.err.println("Unexpected error while sending order confirmation to: " +
                 order.getCustomer().getEmail());
             e.printStackTrace();
         }
@@ -70,7 +76,7 @@ public class EmailUtil {
      */
     public void sendBillEmail(Order order) {
         // Validate order and customer email
-        if (order == null || order.getCustomer() == null || 
+        if (order == null || order.getCustomer() == null ||
             order.getCustomer().getEmail() == null || order.getCustomer().getEmail().trim().isEmpty()) {
             System.err.println("Cannot send bill: Invalid order or customer email");
             return;
@@ -88,7 +94,7 @@ public class EmailUtil {
 
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(EMAIL_USERNAME));
-            message.setRecipients(Message.RecipientType.TO, 
+            message.setRecipients(Message.RecipientType.TO,
                 InternetAddress.parse(order.getCustomer().getEmail()));
             message.setSubject("Invoice/Bill - Order #" + order.getId() + " - " + COMPANY_NAME);
 
@@ -102,7 +108,7 @@ public class EmailUtil {
             System.err.println("Failed to send bill to: " + order.getCustomer().getEmail());
             e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("Unexpected error while sending bill to: " + 
+            System.err.println("Unexpected error while sending bill to: " +
                 order.getCustomer().getEmail());
             e.printStackTrace();
         }
@@ -205,8 +211,8 @@ public class EmailUtil {
 
         for (OrderItem item : order.getOrderItems()) {
             emailBody.append(String.format("%-35s %5d $%9.2f $%14.2f\n",
-                item.getBook().getTitle().length() > 35 ? 
-                    item.getBook().getTitle().substring(0, 32) + "..." : 
+                item.getBook().getTitle().length() > 35 ?
+                    item.getBook().getTitle().substring(0, 32) + "..." :
                     item.getBook().getTitle(),
                 item.getQuantity(),
                 item.getUnitPrice(),

@@ -10,7 +10,7 @@ public class DatabaseConnection {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "qazwsx123ED";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    
+
     private DatabaseConnection() {
         try {
             Class.forName(DRIVER);
@@ -18,14 +18,14 @@ public class DatabaseConnection {
             throw new RuntimeException("MySQL Driver not found", e);
         }
     }
-    
+
     public static synchronized DatabaseConnection getInstance() {
         if (instance == null) {
             instance = new DatabaseConnection();
         }
         return instance;
     }
-    
+
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
