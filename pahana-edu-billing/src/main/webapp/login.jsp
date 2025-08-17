@@ -68,6 +68,12 @@
             margin: 0 auto 2rem;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hero-icon:hover {
+            transform: scale(1.05);
         }
 
         .hero-icon i {
@@ -203,6 +209,22 @@
             padding-left: 2.75rem;
         }
 
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            z-index: 3;
+        }
+
+        .password-toggle:hover {
+            color: #667eea;
+        }
+
         .btn-login {
             width: 100%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -274,6 +296,55 @@
             margin-top: 2rem;
             color: #9ca3af;
             font-size: 0.85rem;
+        }
+
+        /* Hidden admin login styles */
+        .admin-hidden {
+            display: none !important;
+        }
+
+        .admin-reveal {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .secret-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .secret-indicator:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: scale(1.1);
+        }
+
+        .secret-indicator.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: white;
         }
 
         @media (max-width: 768px) {
@@ -354,18 +425,18 @@
         <!-- Left Image Section -->
         <div class="image-section">
             <div class="hero-content">
-                <div class="hero-icon">
+                <div class="hero-icon" id="secretTrigger">
                     <i class="fas fa-book-open"></i>
                 </div>
                 <h1 class="hero-title">Bookshop Management</h1>
                 <p class="hero-subtitle">
-                    Access your comprehensive bookshop management system or browse our collection as a customer.
+                    Browse our collection and manage your orders with ease.
                 </p>
                 <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Inventory & Stock Management</li>
-                    <li><i class="fas fa-check"></i> Sales & Order Processing</li>
-                    <li><i class="fas fa-check"></i> Customer & Student Records</li>
-                    <li><i class="fas fa-check"></i> Easy Book Shopping</li>
+                    <li><i class="fas fa-check"></i> Browse Book Collection</li>
+                    <li><i class="fas fa-check"></i> Easy Order Management</li>
+                    <li><i class="fas fa-check"></i> Customer Account Access</li>
+                    <li><i class="fas fa-check"></i> Secure Shopping Experience</li>
                 </ul>
             </div>
         </div>
@@ -378,7 +449,7 @@
                         <i class="fas fa-book"></i>
                     </div>
                     <h2 class="brand-title">Pahana Edu Bookshop</h2>
-                    <p class="brand-subtitle">Bookshop Management System</p>
+                    <p class="brand-subtitle">Customer Login</p>
                 </div>
 
                 <div class="login-form">
@@ -397,18 +468,18 @@
                     </c:if>
 
                     <!-- Tabs for Admin/Staff and Customer Login -->
-                    <ul class="nav nav-tabs" id="loginTabs">
+                    <ul class="nav nav-tabs admin-hidden" id="loginTabs">
                         <li class="nav-item">
-                            <a class="nav-link active" id="admin-tab" data-bs-toggle="tab" href="#admin-login">Admin/Staff</a>
+                            <a class="nav-link" id="admin-tab" data-bs-toggle="tab" href="#admin-login">Admin/Staff</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="customer-tab" data-bs-toggle="tab" href="#customer-login">Customer</a>
+                            <a class="nav-link active" id="customer-tab" data-bs-toggle="tab" href="#customer-login">Customer</a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
-                        <!-- Admin/Staff Login -->
-                        <div class="tab-pane fade show active" id="admin-login">
+                        <!-- Admin/Staff Login - Initially Hidden -->
+                        <div class="tab-pane fade admin-hidden" id="admin-login">
                             <form method="post" action="${pageContext.request.contextPath}/login" id="adminLoginForm">
                                 <input type="hidden" name="loginType" value="admin">
                                 <div class="form-group">
@@ -442,8 +513,8 @@
                             </form>
                         </div>
 
-                        <!-- Customer Login -->
-                        <div class="tab-pane fade" id="customer-login">
+                        <!-- Customer Login - Default View -->
+                        <div class="tab-pane fade show active" id="customer-login">
                             <form method="post" action="${pageContext.request.contextPath}/login" id="customerLoginForm">
                                 <input type="hidden" name="loginType" value="customer">
                                 <div class="form-group">
@@ -479,7 +550,7 @@
                     </div>
 
                     <div class="text-center mt-3">
-                        <small class="text-muted">Customer? Use your account number and telephone number to log in.</small>
+                        <small class="text-muted">Use your account number and telephone number to log in.</small>
                     </div>
                 </div>
 
@@ -491,8 +562,107 @@
         </div>
     </div>
 
+    <!-- Secret indicator (optional visual cue) -->
+    <div class="secret-indicator" id="secretIndicator">
+        <i class="fas fa-user-shield"></i>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        let secretSequence = [];
+        let adminVisible = false;
+        const SECRET_CODE = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
+        
+        // Secret trigger methods
+        function showAdminLogin() {
+            if (!adminVisible) {
+                adminVisible = true;
+                
+                // Show admin elements
+                document.querySelectorAll('.admin-hidden').forEach(el => {
+                    el.classList.remove('admin-hidden');
+                    el.classList.add('admin-reveal');
+                });
+                
+                // Update tabs
+                document.getElementById('admin-tab').classList.add('active');
+                document.getElementById('customer-tab').classList.remove('active');
+                
+                // Update tab content
+                document.getElementById('admin-login').classList.add('show', 'active');
+                document.getElementById('customer-login').classList.remove('show', 'active');
+                
+                // Update brand subtitle
+                document.querySelector('.brand-subtitle').textContent = 'Bookshop Management System';
+                
+                // Update hero subtitle
+                document.querySelector('.hero-subtitle').textContent = 'Access your comprehensive bookshop management system or browse our collection as a customer.';
+                
+                // Update feature list
+                const featureList = document.querySelector('.feature-list');
+                featureList.innerHTML = `
+                    <li><i class="fas fa-check"></i> Inventory & Stock Management</li>
+                    <li><i class="fas fa-check"></i> Sales & Order Processing</li>
+                    <li><i class="fas fa-check"></i> Customer & Student Records</li>
+                    <li><i class="fas fa-check"></i> Easy Book Shopping</li>
+                `;
+                
+                // Update secret indicator
+                document.getElementById('secretIndicator').classList.add('active');
+                
+                // Focus on username field
+                setTimeout(() => {
+                    document.getElementById('username').focus();
+                }, 500);
+            }
+        }
+        
+        // Method 1: Konami Code (Arrow keys sequence)
+        document.addEventListener('keydown', function(event) {
+            secretSequence.push(event.code);
+            
+            // Keep only last 8 keys
+            if (secretSequence.length > SECRET_CODE.length) {
+                secretSequence.shift();
+            }
+            
+            // Check if sequence matches
+            if (secretSequence.length === SECRET_CODE.length && 
+                secretSequence.every((key, index) => key === SECRET_CODE[index])) {
+                showAdminLogin();
+                secretSequence = []; // Reset sequence
+            }
+        });
+        
+        // Method 2: Triple click on the book icon
+        let clickCount = 0;
+        let clickTimer = null;
+        
+        document.getElementById('secretTrigger').addEventListener('click', function() {
+            clickCount++;
+            
+            if (clickCount === 1) {
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 1000); // Reset after 1 second
+            } else if (clickCount === 3) {
+                clearTimeout(clickTimer);
+                showAdminLogin();
+                clickCount = 0;
+            }
+        });
+        
+        // Method 3: Double click on secret indicator
+        document.getElementById('secretIndicator').addEventListener('dblclick', function() {
+            showAdminLogin();
+        });
+        
+        // Method 4: URL parameter (e.g., ?admin=true)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('admin') === 'true') {
+            showAdminLogin();
+        }
+
         function togglePassword(fieldId) {
             const input = document.getElementById(fieldId);
             const toggleIcon = document.getElementById(`toggleIcon${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)}`);
@@ -512,12 +682,9 @@
             togglePassword(fieldId);
         }
 
-        // Auto-focus first field based on active tab
+        // Auto-focus customer field on load
         document.addEventListener('DOMContentLoaded', function() {
-            const adminTab = document.getElementById('admin-tab');
-            if (adminTab.classList.contains('active')) {
-                document.getElementById('username').focus();
-            }
+            document.getElementById('accountNumber').focus();
 
             // Tab switch handling
             document.querySelectorAll('.nav-link').forEach(tab => {

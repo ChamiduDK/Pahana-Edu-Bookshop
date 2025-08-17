@@ -171,6 +171,92 @@ public class CustomerDAO {
             return String.format("ACC%03d", nextNumber);
         }
     }
+    
+ // Add these methods to your existing CustomerDAO class:
+
+    public Customer findByTelephone(String telephone) throws SQLException {
+        String sql = "SELECT * FROM customers WHERE telephone = ?";
+
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, telephone);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToCustomer(rs);
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean isAccountNumberExists(String accountNumber) throws SQLException {
+        String sql = "SELECT COUNT(*) as count FROM customers WHERE account_number = ?";
+
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, accountNumber);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("count") > 0;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isTelephoneExists(String telephone) throws SQLException {
+        String sql = "SELECT COUNT(*) as count FROM customers WHERE telephone = ?";
+
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, telephone);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("count") > 0;
+                }
+            }
+        }
+        return false;
+    }
+
+    public List<Customer> findByNamePattern(String namePattern) throws SQLException {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "SELECT * FROM customers WHERE name LIKE ? ORDER BY name";
+        String searchPattern = "%" + namePattern + "%";
+
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, searchPattern);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    customers.add(mapResultSetToCustomer(rs));
+                }
+            }
+        }
+        return customers;
+    }
+
+    public int getCustomerCount() throws SQLException {
+        String sql = "SELECT COUNT(*) as count FROM customers";
+
+        try (Connection conn = dbConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                return rs.getInt("count");
+            }
+        }
+        return 0;
+    }
 
     private Customer mapResultSetToCustomer(ResultSet rs) throws SQLException {
         Customer customer = new Customer();
