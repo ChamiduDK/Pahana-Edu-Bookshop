@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Pahana Edu Bookshop</title>
+    <title>Admin Login - Pahana Edu Bookshop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -160,6 +160,22 @@
             border: 1px solid #f1f5f9;
         }
 
+        .admin-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-badge i {
+            margin-right: 0.5rem;
+        }
+
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -201,6 +217,22 @@
 
         .form-control.has-icon {
             padding-left: 2.75rem;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            z-index: 3;
+        }
+
+        .password-toggle:hover {
+            color: #667eea;
         }
 
         .btn-login {
@@ -247,26 +279,50 @@
             border-left: 4px solid #16a34a;
         }
 
-        .nav-tabs {
-            border: none;
-            margin-bottom: 1.5rem;
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            text-align: center;
         }
 
-        .nav-tabs .nav-link {
-            border: none;
-            border-radius: 12px;
-            padding: 0.75rem 1.5rem;
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e5e7eb;
+        }
+
+        .divider span {
+            padding: 0 1rem;
+            color: #9ca3af;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .customer-login-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
             color: #64748b;
-            font-weight: 600;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.3s ease;
         }
 
-        .nav-tabs .nav-link.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .customer-login-link:hover {
+            color: #00b894;
+            border-color: #00b894;
+            text-decoration: none;
         }
 
-        .nav-tabs .nav-link:hover {
-            color: #667eea;
+        .customer-login-link i {
+            margin-right: 0.5rem;
         }
 
         .footer-text {
@@ -357,15 +413,16 @@
                 <div class="hero-icon">
                     <i class="fas fa-book-open"></i>
                 </div>
-                <h1 class="hero-title">Bookshop Management</h1>
+                <h1 class="hero-title">Management Portal</h1>
                 <p class="hero-subtitle">
-                    Access your comprehensive bookshop management system or browse our collection as a customer.
+                    Access your comprehensive bookshop management system to handle inventory, sales, and operations.
                 </p>
                 <ul class="feature-list">
                     <li><i class="fas fa-check"></i> Inventory & Stock Management</li>
                     <li><i class="fas fa-check"></i> Sales & Order Processing</li>
                     <li><i class="fas fa-check"></i> Customer & Student Records</li>
-                    <li><i class="fas fa-check"></i> Easy Book Shopping</li>
+                    <li><i class="fas fa-check"></i> Analytics & Reports</li>
+                    <li><i class="fas fa-check"></i> User Role Management</li>
                 </ul>
             </div>
         </div>
@@ -378,10 +435,15 @@
                         <i class="fas fa-book"></i>
                     </div>
                     <h2 class="brand-title">Pahana Edu Bookshop</h2>
-                    <p class="brand-subtitle">Bookshop Management System</p>
+                    <p class="brand-subtitle">Management System</p>
                 </div>
 
                 <div class="login-form">
+                    <div class="admin-badge">
+                        <i class="fas fa-users-cog"></i>
+                        Staff & Administrator Access
+                    </div>
+
                     <!-- Error Alert -->
                     <c:if test="${not empty error}">
                         <div class="alert alert-danger" role="alert">
@@ -396,96 +458,53 @@
                         </div>
                     </c:if>
 
-                    <!-- Tabs for Admin/Staff and Customer Login -->
-                    <ul class="nav nav-tabs" id="loginTabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="admin-tab" data-bs-toggle="tab" href="#admin-login">Admin/Staff</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="customer-tab" data-bs-toggle="tab" href="#customer-login">Customer</a>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content">
-                        <!-- Admin/Staff Login -->
-                        <div class="tab-pane fade show active" id="admin-login">
-                            <form method="post" action="${pageContext.request.contextPath}/login" id="adminLoginForm">
-                                <input type="hidden" name="loginType" value="admin">
-                                <div class="form-group">
-                                    <label for="username" class="form-label">Username</label>
-                                    <div class="input-group">
-                                        <i class="fas fa-user input-icon"></i>
-                                        <input type="text" class="form-control has-icon" 
-                                               id="username" name="username" required 
-                                               placeholder="Enter your username"
-                                               autocomplete="username">
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="password" class="form-label">Password</label>
-                                    <div class="input-group">
-                                        <i class="fas fa-lock input-icon"></i>
-                                        <input type="password" class="form-control has-icon" 
-                                               id="password" name="password" required 
-                                               placeholder="Enter your password"
-                                               autocomplete="current-password">
-                                        <button type="button" class="password-toggle" onclick="togglePassword('password')">
-                                            <i class="fas fa-eye" id="toggleIconPassword"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <button type="submit" class="btn btn-login" id="adminLoginBtn">
-                                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
-                                </button>
-                            </form>
+                    <!-- Admin/Staff Login Form -->
+                    <form method="post" action="${pageContext.request.contextPath}/login" id="adminLoginForm">
+                        <input type="hidden" name="loginType" value="admin">
+                        
+                        <div class="form-group">
+                            <label for="username" class="form-label">Username</label>
+                            <div class="input-group">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" class="form-control has-icon" 
+                                       id="username" name="username" required 
+                                       placeholder="Enter your username"
+                                       autocomplete="username">
+                            </div>
                         </div>
-
-                        <!-- Customer Login -->
-                        <div class="tab-pane fade" id="customer-login">
-                            <form method="post" action="${pageContext.request.contextPath}/login" id="customerLoginForm">
-                                <input type="hidden" name="loginType" value="customer">
-                                <div class="form-group">
-                                    <label for="accountNumber" class="form-label">Account Number</label>
-                                    <div class="input-group">
-                                        <i class="fas fa-id-card input-icon"></i>
-                                        <input type="text" class="form-control has-icon" 
-                                               id="accountNumber" name="accountNumber" required 
-                                               placeholder="Enter your account number"
-                                               autocomplete="off">
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="telephone" class="form-label">Telephone Number</label>
-                                    <div class="input-group">
-                                        <i class="fas fa-phone input-icon"></i>
-                                        <input type="tel" class="form-control has-icon" 
-                                               id="telephone" name="telephone" required 
-                                               placeholder="Enter your telephone number"
-                                               autocomplete="tel">
-                                        <button type="button" class="password-toggle" onclick="toggleTelephone('telephone')">
-                                            <i class="fas fa-eye" id="toggleIconTelephone"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <button type="submit" class="btn btn-login" id="customerLoginBtn">
-                                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" class="form-control has-icon" 
+                                       id="password" name="password" required 
+                                       placeholder="Enter your password"
+                                       autocomplete="current-password">
+                                <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                    <i class="fas fa-eye" id="toggleIconPassword"></i>
                                 </button>
-                            </form>
+                            </div>
                         </div>
+                        
+                        <button type="submit" class="btn btn-login" id="adminLoginBtn">
+                            <i class="fas fa-sign-in-alt me-2"></i>Access Dashboard
+                        </button>
+                    </form>
+
+                    <div class="divider">
+                        <span>or</span>
                     </div>
 
-                    <div class="text-center mt-3">
-                        <small class="text-muted">Customer? Use your account number and telephone number to log in.</small>
-                    </div>
+                    <a href="${pageContext.request.contextPath}/customer-login" class="customer-login-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        Customer Login
+                    </a>
                 </div>
 
                 <div class="footer-text">
                     <i class="fas fa-shield-alt me-1"></i>
-                    © 2024 Pahana Edu Bookshop. Professional Bookshop Management Solution
+                    © 2024 Pahana Edu Bookshop. Professional Management Solution
                 </div>
             </div>
         </div>
@@ -497,50 +516,27 @@
             const input = document.getElementById(fieldId);
             const toggleIcon = document.getElementById(`toggleIcon${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)}`);
             
-            if (input.type === 'password' || input.type === 'tel') {
+            if (input.type === 'password') {
                 input.type = 'text';
                 toggleIcon.classList.remove('fa-eye');
                 toggleIcon.classList.add('fa-eye-slash');
             } else {
-                input.type = fieldId === 'password' ? 'password' : 'tel';
+                input.type = 'password';
                 toggleIcon.classList.remove('fa-eye-slash');
                 toggleIcon.classList.add('fa-eye');
             }
         }
 
-        function toggleTelephone(fieldId) {
-            togglePassword(fieldId);
-        }
-
-        // Auto-focus first field based on active tab
+        // Auto-focus and form enhancements
         document.addEventListener('DOMContentLoaded', function() {
-            const adminTab = document.getElementById('admin-tab');
-            if (adminTab.classList.contains('active')) {
-                document.getElementById('username').focus();
-            }
-
-            // Tab switch handling
-            document.querySelectorAll('.nav-link').forEach(tab => {
-                tab.addEventListener('shown.bs.tab', function() {
-                    if (this.id === 'admin-tab') {
-                        document.getElementById('username').focus();
-                    } else {
-                        document.getElementById('accountNumber').focus();
-                    }
-                });
-            });
+            // Auto-focus username field
+            document.getElementById('username').focus();
 
             // Form submission with loading state
             document.getElementById('adminLoginForm').addEventListener('submit', function() {
                 const submitBtn = document.getElementById('adminLoginBtn');
                 submitBtn.classList.add('loading');
-                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Signing In...';
-            });
-
-            document.getElementById('customerLoginForm').addEventListener('submit', function() {
-                const submitBtn = document.getElementById('customerLoginBtn');
-                submitBtn.classList.add('loading');
-                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Signing In...';
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Accessing...';
             });
 
             // Add smooth transitions to form inputs
