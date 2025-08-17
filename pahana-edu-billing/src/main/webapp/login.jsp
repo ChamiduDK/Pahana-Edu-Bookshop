@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Pahana Edu Bookshop</title>
+    <title>Login - Pahana Edu Bookshop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -68,6 +68,12 @@
             margin: 0 auto 2rem;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hero-icon:hover {
+            transform: scale(1.05);
         }
 
         .hero-icon i {
@@ -158,22 +164,6 @@
             padding: 2.5rem;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
             border: 1px solid #f1f5f9;
-        }
-
-        .admin-badge {
-            display: inline-flex;
-            align-items: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-
-        .admin-badge i {
-            margin-right: 0.5rem;
         }
 
         .form-group {
@@ -279,50 +269,26 @@
             border-left: 4px solid #16a34a;
         }
 
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 1.5rem 0;
-            text-align: center;
+        .nav-tabs {
+            border: none;
+            margin-bottom: 1.5rem;
         }
 
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #e5e7eb;
-        }
-
-        .divider span {
-            padding: 0 1rem;
-            color: #9ca3af;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .customer-login-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: #64748b;
-            font-size: 0.9rem;
-            font-weight: 500;
-            padding: 0.75rem;
-            border: 2px solid #e5e7eb;
+        .nav-tabs .nav-link {
+            border: none;
             border-radius: 12px;
-            transition: all 0.3s ease;
+            padding: 0.75rem 1.5rem;
+            color: #64748b;
+            font-weight: 600;
         }
 
-        .customer-login-link:hover {
-            color: #00b894;
-            border-color: #00b894;
-            text-decoration: none;
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
 
-        .customer-login-link i {
-            margin-right: 0.5rem;
+        .nav-tabs .nav-link:hover {
+            color: #667eea;
         }
 
         .footer-text {
@@ -330,6 +296,55 @@
             margin-top: 2rem;
             color: #9ca3af;
             font-size: 0.85rem;
+        }
+
+        /* Hidden admin login styles */
+        .admin-hidden {
+            display: none !important;
+        }
+
+        .admin-reveal {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .secret-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .secret-indicator:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: scale(1.1);
+        }
+
+        .secret-indicator.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: white;
         }
 
         @media (max-width: 768px) {
@@ -410,19 +425,18 @@
         <!-- Left Image Section -->
         <div class="image-section">
             <div class="hero-content">
-                <div class="hero-icon">
+                <div class="hero-icon" id="secretTrigger">
                     <i class="fas fa-book-open"></i>
                 </div>
-                <h1 class="hero-title">Management Portal</h1>
+                <h1 class="hero-title">Bookshop Management</h1>
                 <p class="hero-subtitle">
-                    Access your comprehensive bookshop management system to handle inventory, sales, and operations.
+                    Browse our collection and manage your orders with ease.
                 </p>
                 <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Inventory & Stock Management</li>
-                    <li><i class="fas fa-check"></i> Sales & Order Processing</li>
-                    <li><i class="fas fa-check"></i> Customer & Student Records</li>
-                    <li><i class="fas fa-check"></i> Analytics & Reports</li>
-                    <li><i class="fas fa-check"></i> User Role Management</li>
+                    <li><i class="fas fa-check"></i> Browse Book Collection</li>
+                    <li><i class="fas fa-check"></i> Easy Order Management</li>
+                    <li><i class="fas fa-check"></i> Customer Account Access</li>
+                    <li><i class="fas fa-check"></i> Secure Shopping Experience</li>
                 </ul>
             </div>
         </div>
@@ -435,15 +449,10 @@
                         <i class="fas fa-book"></i>
                     </div>
                     <h2 class="brand-title">Pahana Edu Bookshop</h2>
-                    <p class="brand-subtitle">Management System</p>
+                    <p class="brand-subtitle">Customer Login</p>
                 </div>
 
                 <div class="login-form">
-                    <div class="admin-badge">
-                        <i class="fas fa-users-cog"></i>
-                        Staff & Administrator Access
-                    </div>
-
                     <!-- Error Alert -->
                     <c:if test="${not empty error}">
                         <div class="alert alert-danger" role="alert">
@@ -458,85 +467,247 @@
                         </div>
                     </c:if>
 
-                    <!-- Admin/Staff Login Form -->
-                    <form method="post" action="${pageContext.request.contextPath}/login" id="adminLoginForm">
-                        <input type="hidden" name="loginType" value="admin">
-                        
-                        <div class="form-group">
-                            <label for="username" class="form-label">Username</label>
-                            <div class="input-group">
-                                <i class="fas fa-user input-icon"></i>
-                                <input type="text" class="form-control has-icon" 
-                                       id="username" name="username" required 
-                                       placeholder="Enter your username"
-                                       autocomplete="username">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="password" class="form-label">Password</label>
-                            <div class="input-group">
-                                <i class="fas fa-lock input-icon"></i>
-                                <input type="password" class="form-control has-icon" 
-                                       id="password" name="password" required 
-                                       placeholder="Enter your password"
-                                       autocomplete="current-password">
-                                <button type="button" class="password-toggle" onclick="togglePassword('password')">
-                                    <i class="fas fa-eye" id="toggleIconPassword"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-login" id="adminLoginBtn">
-                            <i class="fas fa-sign-in-alt me-2"></i>Access Dashboard
-                        </button>
-                    </form>
+                    <!-- Tabs for Admin/Staff and Customer Login -->
+                    <ul class="nav nav-tabs admin-hidden" id="loginTabs">
+                        <li class="nav-item">
+                            <a class="nav-link" id="admin-tab" data-bs-toggle="tab" href="#admin-login">Admin/Staff</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" id="customer-tab" data-bs-toggle="tab" href="#customer-login">Customer</a>
+                        </li>
+                    </ul>
 
-                    <div class="divider">
-                        <span>or</span>
+                    <div class="tab-content">
+                        <!-- Admin/Staff Login - Initially Hidden -->
+                        <div class="tab-pane fade admin-hidden" id="admin-login">
+                            <form method="post" action="${pageContext.request.contextPath}/login" id="adminLoginForm">
+                                <input type="hidden" name="loginType" value="admin">
+                                <div class="form-group">
+                                    <label for="username" class="form-label">Username</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-user input-icon"></i>
+                                        <input type="text" class="form-control has-icon" 
+                                               id="username" name="username" required 
+                                               placeholder="Enter your username"
+                                               autocomplete="username">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-lock input-icon"></i>
+                                        <input type="password" class="form-control has-icon" 
+                                               id="password" name="password" required 
+                                               placeholder="Enter your password"
+                                               autocomplete="current-password">
+                                        <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                            <i class="fas fa-eye" id="toggleIconPassword"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-login" id="adminLoginBtn">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Customer Login - Default View -->
+                        <div class="tab-pane fade show active" id="customer-login">
+                            <form method="post" action="${pageContext.request.contextPath}/login" id="customerLoginForm">
+                                <input type="hidden" name="loginType" value="customer">
+                                <div class="form-group">
+                                    <label for="accountNumber" class="form-label">Account Number</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-id-card input-icon"></i>
+                                        <input type="text" class="form-control has-icon" 
+                                               id="accountNumber" name="accountNumber" required 
+                                               placeholder="Enter your account number"
+                                               autocomplete="off">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="telephone" class="form-label">Telephone Number</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-phone input-icon"></i>
+                                        <input type="tel" class="form-control has-icon" 
+                                               id="telephone" name="telephone" required 
+                                               placeholder="Enter your telephone number"
+                                               autocomplete="tel">
+                                        <button type="button" class="password-toggle" onclick="toggleTelephone('telephone')">
+                                            <i class="fas fa-eye" id="toggleIconTelephone"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-login" id="customerLoginBtn">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                                </button>
+                            </form>
+                        </div>
                     </div>
 
-                    <a href="${pageContext.request.contextPath}/customer-login" class="customer-login-link">
-                        <i class="fas fa-shopping-cart"></i>
-                        Customer Login
-                    </a>
+                    <div class="text-center mt-3">
+                        <small class="text-muted">Use your account number and telephone number to log in.</small>
+                    </div>
                 </div>
 
                 <div class="footer-text">
                     <i class="fas fa-shield-alt me-1"></i>
-                    © 2024 Pahana Edu Bookshop. Professional Management Solution
+                    © 2024 Pahana Edu Bookshop. Professional Bookshop Management Solution
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Secret indicator (optional visual cue) -->
+    <div class="secret-indicator" id="secretIndicator">
+        <i class="fas fa-user-shield"></i>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        let secretSequence = [];
+        let adminVisible = false;
+        const SECRET_CODE = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
+        
+        // Secret trigger methods
+        function showAdminLogin() {
+            if (!adminVisible) {
+                adminVisible = true;
+                
+                // Show admin elements
+                document.querySelectorAll('.admin-hidden').forEach(el => {
+                    el.classList.remove('admin-hidden');
+                    el.classList.add('admin-reveal');
+                });
+                
+                // Update tabs
+                document.getElementById('admin-tab').classList.add('active');
+                document.getElementById('customer-tab').classList.remove('active');
+                
+                // Update tab content
+                document.getElementById('admin-login').classList.add('show', 'active');
+                document.getElementById('customer-login').classList.remove('show', 'active');
+                
+                // Update brand subtitle
+                document.querySelector('.brand-subtitle').textContent = 'Bookshop Management System';
+                
+                // Update hero subtitle
+                document.querySelector('.hero-subtitle').textContent = 'Access your comprehensive bookshop management system or browse our collection as a customer.';
+                
+                // Update feature list
+                const featureList = document.querySelector('.feature-list');
+                featureList.innerHTML = `
+                    <li><i class="fas fa-check"></i> Inventory & Stock Management</li>
+                    <li><i class="fas fa-check"></i> Sales & Order Processing</li>
+                    <li><i class="fas fa-check"></i> Customer & Student Records</li>
+                    <li><i class="fas fa-check"></i> Easy Book Shopping</li>
+                `;
+                
+                // Update secret indicator
+                document.getElementById('secretIndicator').classList.add('active');
+                
+                // Focus on username field
+                setTimeout(() => {
+                    document.getElementById('username').focus();
+                }, 500);
+            }
+        }
+        
+        // Method 1: Konami Code (Arrow keys sequence)
+        document.addEventListener('keydown', function(event) {
+            secretSequence.push(event.code);
+            
+            // Keep only last 8 keys
+            if (secretSequence.length > SECRET_CODE.length) {
+                secretSequence.shift();
+            }
+            
+            // Check if sequence matches
+            if (secretSequence.length === SECRET_CODE.length && 
+                secretSequence.every((key, index) => key === SECRET_CODE[index])) {
+                showAdminLogin();
+                secretSequence = []; // Reset sequence
+            }
+        });
+        
+        // Method 2: Triple click on the book icon
+        let clickCount = 0;
+        let clickTimer = null;
+        
+        document.getElementById('secretTrigger').addEventListener('click', function() {
+            clickCount++;
+            
+            if (clickCount === 1) {
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 1000); // Reset after 1 second
+            } else if (clickCount === 3) {
+                clearTimeout(clickTimer);
+                showAdminLogin();
+                clickCount = 0;
+            }
+        });
+        
+        // Method 3: Double click on secret indicator
+        document.getElementById('secretIndicator').addEventListener('dblclick', function() {
+            showAdminLogin();
+        });
+        
+        // Method 4: URL parameter (e.g., ?admin=true)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('admin') === 'true') {
+            showAdminLogin();
+        }
+
         function togglePassword(fieldId) {
             const input = document.getElementById(fieldId);
             const toggleIcon = document.getElementById(`toggleIcon${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)}`);
             
-            if (input.type === 'password') {
+            if (input.type === 'password' || input.type === 'tel') {
                 input.type = 'text';
                 toggleIcon.classList.remove('fa-eye');
                 toggleIcon.classList.add('fa-eye-slash');
             } else {
-                input.type = 'password';
+                input.type = fieldId === 'password' ? 'password' : 'tel';
                 toggleIcon.classList.remove('fa-eye-slash');
                 toggleIcon.classList.add('fa-eye');
             }
         }
 
-        // Auto-focus and form enhancements
+        function toggleTelephone(fieldId) {
+            togglePassword(fieldId);
+        }
+
+        // Auto-focus customer field on load
         document.addEventListener('DOMContentLoaded', function() {
-            // Auto-focus username field
-            document.getElementById('username').focus();
+            document.getElementById('accountNumber').focus();
+
+            // Tab switch handling
+            document.querySelectorAll('.nav-link').forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function() {
+                    if (this.id === 'admin-tab') {
+                        document.getElementById('username').focus();
+                    } else {
+                        document.getElementById('accountNumber').focus();
+                    }
+                });
+            });
 
             // Form submission with loading state
             document.getElementById('adminLoginForm').addEventListener('submit', function() {
                 const submitBtn = document.getElementById('adminLoginBtn');
                 submitBtn.classList.add('loading');
-                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Accessing...';
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Signing In...';
+            });
+
+            document.getElementById('customerLoginForm').addEventListener('submit', function() {
+                const submitBtn = document.getElementById('customerLoginBtn');
+                submitBtn.classList.add('loading');
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Signing In...';
             });
 
             // Add smooth transitions to form inputs
