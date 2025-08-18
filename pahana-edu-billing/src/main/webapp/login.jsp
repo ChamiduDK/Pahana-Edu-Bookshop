@@ -298,6 +298,43 @@
             font-size: 0.85rem;
         }
 
+        /* Registration Link Styles */
+        .registration-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .registration-link p {
+            color: #64748b;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-register-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-register-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+            text-decoration: none;
+        }
+
         /* Hidden admin login styles */
         .admin-hidden {
             display: none !important;
@@ -418,6 +455,13 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* New registration success alert */
+        .alert-info {
+            background: #f0f9ff;
+            color: #0369a1;
+            border-left: 4px solid #0369a1;
+        }
     </style>
 </head>
 <body>
@@ -464,6 +508,13 @@
                     <c:if test="${param.logout == 'true'}">
                         <div class="alert alert-success" role="alert">
                             <i class="fas fa-check-circle me-2"></i>You have been successfully logged out.
+                        </div>
+                    </c:if>
+
+                    <!-- Registration Success Alert -->
+                    <c:if test="${param.registered == 'true'}">
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>Registration successful! You can now log in with your account number and telephone number.
                         </div>
                     </c:if>
 
@@ -524,7 +575,8 @@
                                         <input type="text" class="form-control has-icon" 
                                                id="accountNumber" name="accountNumber" required 
                                                placeholder="Enter your account number"
-                                               autocomplete="off">
+                                               autocomplete="off"
+                                               value="${param.accountNumber}">
                                     </div>
                                 </div>
                                 
@@ -547,6 +599,15 @@
                                 </button>
                             </form>
                         </div>
+                    </div>
+
+                    <!-- Registration Link Section -->
+                    <div class="registration-link">
+                        <p class="mb-2">Don't have an account yet?</p>
+                        <a href="${pageContext.request.contextPath}/register" class="btn-register-link">
+                            <i class="fas fa-user-plus"></i>
+                            Create New Account
+                        </a>
                     </div>
 
                     <div class="text-center mt-3">
@@ -684,7 +745,16 @@
 
         // Auto-focus customer field on load
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('accountNumber').focus();
+            // Check for registration success and pre-fill account number
+            const urlParams = new URLSearchParams(window.location.search);
+            const newAccountNumber = urlParams.get('accountNumber');
+            
+            if (newAccountNumber) {
+                document.getElementById('accountNumber').value = newAccountNumber;
+                document.getElementById('telephone').focus();
+            } else {
+                document.getElementById('accountNumber').focus();
+            }
 
             // Tab switch handling
             document.querySelectorAll('.nav-link').forEach(tab => {
@@ -720,6 +790,18 @@
                     this.parentElement.style.transform = 'translateY(0)';
                 });
             });
+
+            // Registration link hover animation
+            const registerLink = document.querySelector('.btn-register-link');
+            if (registerLink) {
+                registerLink.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-1px) scale(1.02)';
+                });
+                
+                registerLink.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            }
         });
     </script>
 </body>
