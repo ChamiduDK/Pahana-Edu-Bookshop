@@ -41,6 +41,70 @@
             color: var(--text-primary);
             line-height: 1.7;
             font-weight: 400;
+            margin-left: 280px; /* Adjusted for sidebar width */
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100%;
+            background: var(--card-gradient);
+            border-right: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem 1.5rem;
+            z-index: 1100;
+        }
+
+        .sidebar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-brand i {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: var(--primary-gradient);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .sidebar-nav a i {
+            width: 24px;
+            text-align: center;
         }
 
         /* Header Styles */
@@ -412,6 +476,8 @@
             margin-bottom: 0;
         }
 
+        prerogative
+
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
@@ -506,7 +572,83 @@
             font-size: 0.85rem;
         }
 
+        /* Help Section Styles */
+        .help-section {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .help-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .help-section .accordion {
+            --bs-accordion-border-radius: var(--border-radius-md);
+            --bs-accordion-border-color: var(--border-color);
+            --bs-accordion-btn-padding-y: 1rem;
+            --bs-accordion-btn-padding-x: 1.5rem;
+            --bs-accordion-body-padding: 1.5rem;
+        }
+
+        .help-section .accordion-button {
+            font-weight: 600;
+            color: var(--text-primary);
+            background: var(--card-gradient);
+        }
+
+        .help-section .accordion-button:not(.collapsed) {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .help-section .accordion-body {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
         /* Responsive Design */
+        @media (max-width: 992px) {
+            body {
+                margin-left: 0;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: block;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 1200;
+                background: var(--primary-gradient);
+                color: white;
+                border: none;
+                border-radius: var(--border-radius-sm);
+                padding: 0.5rem 1rem;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (min-width: 993px) {
+            .sidebar-toggle {
+                display: none;
+            }
+        }
+
         @media (max-width: 768px) {
             .page-title {
                 font-size: 2rem;
@@ -563,6 +705,38 @@
     </style>
 </head>
 <body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <i class="fas fa-book-open"></i> Pahana Edu
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="${pageContext.request.contextPath}/customer-dashboard" class="active">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a></li>
+            <li><a href="${pageContext.request.contextPath}/cart">
+                <i class="fas fa-shopping-cart"></i> Cart
+            </a></li>
+            <li><a href="${pageContext.request.contextPath}/customer-orders">
+                <i class="fas fa-history"></i> My Orders
+            </a></li>
+            <li><a href="${pageContext.request.contextPath}/customer-profile">
+                <i class="fas fa-user"></i> Profile
+            </a></li>
+            <li><a href="#help-section">
+                <i class="fas fa-question-circle"></i> Help
+            </a></li>
+            <li><a href="${pageContext.request.contextPath}/customer-logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a></li>
+        </ul>
+    </aside>
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle d-lg-none" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
     <!-- Header -->
     <nav class="header navbar navbar-expand-lg">
         <div class="container">
@@ -806,11 +980,75 @@
                 </c:otherwise>
             </c:choose>
         </div>
+
+        <!-- Help Section -->
+        <div class="help-section" id="help-section">
+            <h3 class="section-title">
+                <i class="fas fa-question-circle"></i>
+                Help & Support
+            </h3>
+            <div class="accordion" id="helpAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            How do I place an order?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            To place an order, browse the featured books section, select a book, choose the desired quantity, and click "Add to Cart". You can then proceed to the cart page to review and confirm your order.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            How can I track my order?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            You can track your order in the "Order History" section of the dashboard. The status of each order (e.g., Pending, Shipped, Completed) is displayed in the table.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            What if I have an issue with my order?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            If you encounter any issues, please contact our support team at support@pahanaedu.com or call us at +94 123 456 789. We're here to help!
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            How do I update my profile information?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                        <div class="accordion-body">
+                            Go to the "Profile" section via the sidebar or user dropdown menu. There, you can update your personal details, such as name, email, and address.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Sidebar toggle functionality
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active');
+        }
+
         // Add smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -821,6 +1059,9 @@
                         behavior: 'smooth',
                         block: 'start'
                     });
+                }
+            });
+        });
 
         // Counter animation for stats
         function animateCounters() {
