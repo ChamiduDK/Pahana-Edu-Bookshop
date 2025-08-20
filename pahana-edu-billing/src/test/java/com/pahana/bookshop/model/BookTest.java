@@ -26,7 +26,7 @@ public class BookTest {
 
     @Test
     void testDefaultConstructor() {
-        // Test: Verify default constructor initializes fields to null or zero
+        // Test: Verify default constructor initializes fields to null / zero
         Book emptyBook = new Book();
         assertNull(emptyBook.getTitle(), "Title should be null");
         assertNull(emptyBook.getAuthor(), "Author should be null");
