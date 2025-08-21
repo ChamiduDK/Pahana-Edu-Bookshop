@@ -16,7 +16,7 @@
             --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             --primary-color: #667eea;
             --dark-color: #2d3748;
-            --border-radius: 24px;
+            --border-radius: 25px;
             --shadow-light: 0 4px 25px rgba(0, 0, 0, 0.08);
         }
 
